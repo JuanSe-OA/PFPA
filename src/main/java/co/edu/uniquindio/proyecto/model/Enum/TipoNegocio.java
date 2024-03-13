@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.Model;
+package co.edu.uniquindio.proyecto.model.Enum;
 
 public enum TipoNegocio {
     PANADERIA,
