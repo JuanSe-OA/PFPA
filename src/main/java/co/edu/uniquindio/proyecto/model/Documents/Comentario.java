@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.Model;
+package co.edu.uniquindio.proyecto.model.Documents;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
