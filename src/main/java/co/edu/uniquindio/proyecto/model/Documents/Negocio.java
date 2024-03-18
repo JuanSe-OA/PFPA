@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.model.Documents;
 
+import co.edu.uniquindio.proyecto.model.Entidades.Horario;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.model.Entidades.Revision;
 import co.edu.uniquindio.proyecto.model.Enum.TipoNegocio;
@@ -28,7 +29,7 @@ public class Negocio implements Serializable {
     private TipoNegocio tipoNegocio;
     private List<String>imagenes;
     private EstadoRegistro estadoRegistro;
-    private List<String>horarios;
+    private List<Horario>horarios;
     private Ubicacion ubicacion;
     private List<Revision> HistorialRevisiones;
 
