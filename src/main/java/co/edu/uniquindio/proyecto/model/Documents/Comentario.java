@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -20,5 +20,5 @@ public class Comentario implements Serializable {
     private String codigo;
     private String mensaje,respuesta,codigoUsuario,codigoNegocio;
     private double calificacion;
-    private LocalTime fecha;
+    private LocalDate fecha;
 }
