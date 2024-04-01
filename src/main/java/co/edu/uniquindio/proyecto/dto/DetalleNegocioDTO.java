@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public record DetalleNegocioDTO(
+        @NotBlank String codigo,
         @NotBlank String nombre,
         @NotBlank String descripcion,
         @NotBlank String direccion,
