@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.dto;
+package co.edu.uniquindio.proyecto.dto.usuariosdtos;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;

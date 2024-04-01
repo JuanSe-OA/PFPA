@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.dto;
+package co.edu.uniquindio.proyecto.dto.negociodtos;
 
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;

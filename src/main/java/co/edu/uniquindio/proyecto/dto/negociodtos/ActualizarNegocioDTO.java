@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.dto;
+package co.edu.uniquindio.proyecto.dto.negociodtos;
 
 import co.edu.uniquindio.proyecto.model.Entidades.Horario;
 import co.edu.uniquindio.proyecto.model.Enum.Ubicacion;

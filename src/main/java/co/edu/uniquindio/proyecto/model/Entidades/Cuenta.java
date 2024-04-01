@@ -7,6 +7,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @Data
+@Builder
+@AllArgsConstructor
 public class Cuenta {
     private String nombre,password,email;
     private EstadoRegistro estadoCuenta;

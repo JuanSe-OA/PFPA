@@ -1,8 +1,8 @@
 package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
-import co.edu.uniquindio.proyecto.dto.ActualizarNegocioDTO;
-import co.edu.uniquindio.proyecto.dto.CrearNegocioDTO;
-import co.edu.uniquindio.proyecto.dto.DetalleNegocioDTO;
+import co.edu.uniquindio.proyecto.dto.negociodtos.ActualizarNegocioDTO;
+import co.edu.uniquindio.proyecto.dto.negociodtos.CrearNegocioDTO;
+import co.edu.uniquindio.proyecto.dto.negociodtos.DetalleNegocioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.repositorios.NegociosRepo;

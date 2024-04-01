@@ -1,9 +1,9 @@
 package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
-import co.edu.uniquindio.proyecto.dto.ActualizarClienteDto;
-import co.edu.uniquindio.proyecto.dto.CambioPasswordDto;
-import co.edu.uniquindio.proyecto.dto.MostrarPerfilDTO;
-import co.edu.uniquindio.proyecto.dto.RegistroClienteDto;
+import co.edu.uniquindio.proyecto.dto.usuariosdtos.ActualizarClienteDto;
+import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
+import co.edu.uniquindio.proyecto.dto.usuariosdtos.MostrarPerfilDTO;
+import co.edu.uniquindio.proyecto.dto.usuariosdtos.RegistroClienteDto;
 import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
@@ -69,6 +69,17 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public void mostrarPerfil(MostrarPerfilDTO mostrarPerfilDTO) throws Exception {
+        Optional<Usuario>usuarioOptional = usuariosRepo.findById(mostrarPerfilDTO.id());
+        if(usuarioOptional.isEmpty()){
+            throw new Exception("El usuario no se encuentra registrado");
+        }
+        Usuario usuario = usuarioOptional.get();
+        usuario.setFotoPerfil(mostrarPerfilDTO.fotoPerfil());
+        usuario.setCiudad(mostrarPerfilDTO.ciudad());
+        usuario.setNombre(mostrarPerfilDTO.nombre());
+        usuario.setEmail(mostrarPerfilDTO.email());
+
+        usuariosRepo.save(usuario);
         
     }
 

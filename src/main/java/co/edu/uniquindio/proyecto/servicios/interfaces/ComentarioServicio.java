@@ -1,7 +1,7 @@
 package co.edu.uniquindio.proyecto.servicios.interfaces;
 
-import co.edu.uniquindio.proyecto.dto.CrearComentarioDTO;
-import co.edu.uniquindio.proyecto.dto.ItemComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.negociodtos.CrearComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.negociodtos.ItemComentarioDTO;
 
 import java.util.List;
 

@@ -7,12 +7,16 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.beans.ConstructorProperties;
 import java.util.List;
 @Getter
+@Builder
 @Setter
 @ToString
 @Data
-@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Document ("Usuarios")
 
 public class Usuario extends Cuenta{
@@ -23,5 +27,4 @@ public class Usuario extends Cuenta{
     private List<Revision>historialDeRevisiones;
     private List<String>favoritos;
     private List<String>historialBusqueda;
-
 }
