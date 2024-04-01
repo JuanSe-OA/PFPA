@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
 import co.edu.uniquindio.proyecto.dto.ActualizarClienteDto;
 import co.edu.uniquindio.proyecto.dto.CambioPasswordDto;
+import co.edu.uniquindio.proyecto.dto.MostrarPerfilDTO;
 import co.edu.uniquindio.proyecto.dto.RegistroClienteDto;
 import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
@@ -65,6 +66,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
 
     }
+
+    @Override
+    public void mostrarPerfil(MostrarPerfilDTO mostrarPerfilDTO) throws Exception {
+        
+    }
+
     private boolean existeEmail(String email) {
         return usuariosRepo.findByEmail(email).isPresent();
     }
