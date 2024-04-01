@@ -13,15 +13,17 @@ public interface NegocioServicio {
 
     void actualizarNegocio(ActualizarNegocioDTO actualizarNegocioDTO) throws Exception;
 
-    void eliminarNegocio(String codigoNegocio);
+    void eliminarNegocio(String codigoNegocio)throws Exception;
 
-    List<DetalleNegocioDTO> buscarNegocios(String nombreNegocio);
+    List<DetalleNegocioDTO> buscarNegocios(String busqueda);
 
     void filtrarPorEstado(EstadoRegistro estadoRegistro);
 
+    DetalleNegocioDTO obtenerDetalleNegocio(String codigoNegocio)throws Exception;
+
     List<DetalleNegocioDTO> listarNegociosPropietario(String codigoUsuario);
 
-    void cambiarEstado(String codigonegocio, EstadoRegistro estadoRegistro);
+    void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro)throws Exception;
 
     void registrarRevision();
 }
