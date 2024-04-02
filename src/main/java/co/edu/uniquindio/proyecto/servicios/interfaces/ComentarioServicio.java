@@ -8,9 +8,9 @@ import java.util.List;
 public interface ComentarioServicio {
     String crearComentario(CrearComentarioDTO crearComentarioDTO);
 
-    void responderComentario(String codigoComentario, String mensaje);
+    void responderComentario(String codigoComentario, String mensaje)throws Exception;
 
     List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio);
 
-    double calcularPromedioCalificaciones(List<Double> calificacionesComentarios);
+    double calcularPromedioCalificaciones(String codigoNegocio);
 }
