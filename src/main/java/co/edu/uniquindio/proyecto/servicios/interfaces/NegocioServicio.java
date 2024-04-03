@@ -2,8 +2,6 @@ package co.edu.uniquindio.proyecto.servicios.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.ActualizarNegocioDTO;
 import co.edu.uniquindio.proyecto.dto.CrearNegocioDTO;
-import co.edu.uniquindio.proyecto.dto.DetalleNegocioDTO;
-import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 
 import java.util.List;

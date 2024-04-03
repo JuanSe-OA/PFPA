@@ -1,6 +1,5 @@
 package co.edu.uniquindio.proyecto.repositorios;
 
-import co.edu.uniquindio.proyecto.dto.ItemComentarioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
