@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 
 public class Revision {
-    private String descripcion,codigoModerador,codigoEntidad,respuesta;
+    private String descripcion,codigoModerador,codigoEntidad;
     private EstadoRevision estado;
     private LocalDate fecha;
 
