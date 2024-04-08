@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ComentariosRepo extends MongoRepository<Comentario,String> {
     List<Comentario>findByCodigoNegocio(String codigo);
+
 }
