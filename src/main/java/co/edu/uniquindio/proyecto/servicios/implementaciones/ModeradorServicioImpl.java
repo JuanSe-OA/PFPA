@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
+import co.edu.uniquindio.proyecto.dto.moderadordtos.CambiarPasswordModeradorDTO;
 import co.edu.uniquindio.proyecto.dto.moderadordtos.RevisarComentariosDTO;
 import co.edu.uniquindio.proyecto.dto.moderadordtos.RevisionesModeradorDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
@@ -28,7 +29,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     }
 
     @Override
-    public void actualizarPassword(CambioPasswordDto cambioPasswordDto) throws Exception {
+    public void actualizarPassword(CambiarPasswordModeradorDTO cambiarPasswordModeradorDTO) throws Exception {
 
     }
 
