@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.UsuarioServicio;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +23,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
     @Override
     public String registrarse(RegistroClienteDto registroClienteDTO) throws Exception {
-        //Revisamos en la bd datos existencia del email
+
         if(existeEmail(registroClienteDTO.email())){
             throw new Exception("Usted ya se encuentra registrado en nuestra plataforma");
         }else {
-            //Si no se encuentra existencia, procedemos a crear el usuario
             Usuario usuario = new Usuario();
             usuario.setNombre(registroClienteDTO.nombre());
             usuario.setNombreUsuario(registroClienteDTO.nickname());
@@ -36,6 +36,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             usuario.setFotoPerfil(registroClienteDTO.fotoPerfil());
             usuario.setEstadoCuenta(EstadoRegistro.ACTIVO);
             Usuario usuarioGuardado = usuariosRepo.save(usuario);
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String passwordEncriptada = passwordEncoder.encode( registroClienteDTO.password() );
+            usuario.setPassword( passwordEncriptada );
             //Retornamos el id del cliente registrado
             return usuarioGuardado.getCodigo();
         }
