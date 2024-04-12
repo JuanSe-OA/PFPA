@@ -1,7 +1,9 @@
 package co.edu.uniquindio.proyecto.repositorios;
 
+import co.edu.uniquindio.proyecto.dto.negociodtos.DetalleNegocioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import org.springframework.data.mongodb.core.aggregation.ComparisonOperators;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,4 +22,5 @@ public interface NegociosRepo extends MongoRepository <Negocio,String> {
     List<Negocio> findByCodigoUsuario(String codigoUsuario);
 
     List<Negocio> findByNombreIsLike(String nombre);
+
 }

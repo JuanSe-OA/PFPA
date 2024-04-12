@@ -57,12 +57,7 @@ public class ComentarioServicioImpl implements ComentarioServicio {
 
         List<ItemComentarioDTO> itemsComentariosNegocio = new ArrayList<>();
         for(Comentario c: comentariosNegocio){
-            itemsComentariosNegocio.add(new ItemComentarioDTO(
-                            c.getCodigo(),
-                            c.getMensaje(),
-                            c.getRespuesta(),
-                            c.getCalificacion(),
-                            c.getFecha()));
+
         }
         return itemsComentariosNegocio;
     }
@@ -71,5 +66,10 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     public double calcularPromedioCalificaciones(String codigoNegocio) {
         List<Double> calificacionesNegocio = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
         return calificacionesNegocio.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+    }
+
+    public int calcularNumeroComentarios(String codigoNegocio){
+        List<Double> calificacionesNegocio = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
+        return calificacionesNegocio.size();
     }
 }

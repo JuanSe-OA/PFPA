@@ -7,7 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 public record ItemComentarioDTO(
-        @NotBlank String codigo,
+        @NotBlank String fotoPerfilUsuario,
+        @NotBlank String nombreUsuario,
+        @NotBlank String codigoComentario,
         @NotBlank String mensaje,
         String respuesta,
         @Range(min=1, max=5)
