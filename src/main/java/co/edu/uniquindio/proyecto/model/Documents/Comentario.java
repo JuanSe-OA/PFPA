@@ -1,24 +1,24 @@
 package co.edu.uniquindio.proyecto.model.Documents;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Document("Comentarios")
 @ToString
 public class Comentario implements Serializable {
     @Id
     private String codigo;
-    private String mensaje,respuesta,codigoUsuario,codigoNegocio;
+    private String mensaje,codigoUsuario,codigoNegocio;
+    private List<String>respuestas;
     private double calificacion;
     private LocalDate fecha;
 }

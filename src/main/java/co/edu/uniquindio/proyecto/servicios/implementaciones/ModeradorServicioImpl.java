@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyecto.dto.moderadordtos.RevisarComentariosDTO;
 import co.edu.uniquindio.proyecto.dto.moderadordtos.RevisionesModeradorDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
+import co.edu.uniquindio.proyecto.model.Documents.Moderador;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import co.edu.uniquindio.proyecto.model.Entidades.Revision;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRevision;
@@ -30,6 +31,12 @@ public class ModeradorServicioImpl implements ModeradorServicio {
 
     @Override
     public void actualizarPassword(CambiarPasswordModeradorDTO cambiarPasswordModeradorDTO) throws Exception {
+        Optional<Moderador>optionalModerador = moderadorRepo.findById(cambiarPasswordModeradorDTO.id());
+        if(optionalModerador.isEmpty()){
+            throw new Exception("No fue posible encontrar su perfil en el sistema");
+        }
+        Moderador moderador = optionalModerador.get();
+        moderador.setPassword(cambiarPasswordModeradorDTO.passwordNueva());
 
     }
 

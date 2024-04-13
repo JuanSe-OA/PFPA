@@ -67,7 +67,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         if(usuarioOptional.isEmpty()){
             throw new Exception("Usted no se encuentra registrado");
         }
-
+        Usuario usuario = usuarioOptional.get();
+        usuario.setPassword(cambioPasswordDto.passwordNueva());
+        usuariosRepo.save(usuario);
 
     }
 
@@ -83,8 +85,6 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         usuario.setNombre(mostrarPerfilDTO.nombre());
         usuario.setEmail(mostrarPerfilDTO.email());
 
-        usuariosRepo.save(usuario);
-        
     }
 
     private boolean existeEmail(String email) {
