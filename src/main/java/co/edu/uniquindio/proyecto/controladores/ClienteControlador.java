@@ -1,10 +1,12 @@
 package co.edu.uniquindio.proyecto.controladores;
 
 
+import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.*;
 import co.edu.uniquindio.proyecto.servicios.interfaces.UsuarioServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,32 +16,36 @@ import java.util.List;
 @RequestMapping("/api/clientes")
 public class ClienteControlador {
     private final UsuarioServicio usuarioServicio;
-    @PostMapping("/registrar-cliente")
-    public String registrarse(@Valid @RequestBody RegistroClienteDto registroClienteDTO)throws
-            Exception{
-        return usuarioServicio.registrarse(registroClienteDTO);
-    }
+
     @PutMapping("/editar-perfil")
-    public void editarPerfil(@Valid @RequestBody ActualizarClienteDto
-                                          actualizarClienteDTO)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> actualizarCliente(@Valid @RequestBody
+                                                                ActualizarClienteDto actualizarClienteDTO)throws Exception{
         usuarioServicio.editarPerfil(actualizarClienteDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Cliente actualizado correctamente") );
     }
     @PutMapping("/editar-password")
-    public void cambiarPassword(@PathVariable CambioPasswordDto cambioPasswordDto)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> cambiarPassword(@PathVariable CambioPasswordDto cambioPasswordDto)throws Exception{
         usuarioServicio.actualizarPassword(cambioPasswordDto);
+        return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Cliente actualizado correctamente") );
     }
 
     @DeleteMapping("/eliminar/{codigo}")
-    public void eliminarCuenta(@PathVariable String codigo)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> eliminarCuenta(@PathVariable String codigo)throws
+            Exception{
         usuarioServicio.eliminarPerfil(codigo);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Cliente eliminado correctamente")
+        );
     }
     @GetMapping("/obtener/{codigo}")
-    public MostrarPerfilDTO obtenerCliente(@PathVariable String codigo) throws Exception{
-        return usuarioServicio.mostrarPerfil(codigo);
+    public ResponseEntity<MensajeDTO<MostrarPerfilDTO>> obtenerCliente(@PathVariable String
+                                                                                codigo) throws Exception{
+        return ResponseEntity.ok().body( new MensajeDTO<>(false,
+                usuarioServicio.mostrarPerfil(codigo) ) );
     }
 
     @GetMapping("/listar-todos")
-    public List<ItemUsuarioDTO> listarClientes(String busqueda)throws Exception{
-        return usuarioServicio.listarClientes(busqueda);
+    public ResponseEntity<MensajeDTO<List<ItemUsuarioDTO>>> listarClientes(String busqueda) throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, usuarioServicio.listarClientes(busqueda) )
+        );
     }
 }
