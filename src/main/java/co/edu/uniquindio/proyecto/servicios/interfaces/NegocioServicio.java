@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.servicios.interfaces;
 import co.edu.uniquindio.proyecto.dto.negociodtos.ActualizarNegocioDTO;
 import co.edu.uniquindio.proyecto.dto.negociodtos.CrearNegocioDTO;
 import co.edu.uniquindio.proyecto.dto.negociodtos.DetalleNegocioDTO;
+import co.edu.uniquindio.proyecto.dto.negociodtos.ItemListarNegociosDTO;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface NegocioServicio {
 
     void eliminarNegocio(String codigoNegocio)throws Exception;
 
-    List<DetalleNegocioDTO> buscarNegocios(String busqueda);
+    List<ItemListarNegociosDTO> buscarNegocios(String busqueda);
 
     void filtrarPorEstado(EstadoRegistro estadoRegistro);
 

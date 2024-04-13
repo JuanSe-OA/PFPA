@@ -18,7 +18,7 @@ public class Comentario implements Serializable {
     @Id
     private String codigo;
     private String mensaje,codigoUsuario,codigoNegocio;
-    private List<String>respuestas;
+    private String respuesta;
     private double calificacion;
     private LocalDate fecha;
 }

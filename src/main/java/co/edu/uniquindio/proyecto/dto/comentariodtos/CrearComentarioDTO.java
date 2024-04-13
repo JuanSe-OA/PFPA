@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto.dto.negociodtos;
+package co.edu.uniquindio.proyecto.dto.comentariodtos;
 
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -14,5 +14,5 @@ public record CrearComentarioDTO(
         @NotBlank String codigoNegocio,
         @Range(min=1, max=5)
         @NotBlank double calificacion,
-        @NotBlank @DateTimeFormat LocalDate fecha) {
+        @NotBlank LocalDate fecha) {
 }

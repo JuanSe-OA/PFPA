@@ -1,14 +1,22 @@
 package co.edu.uniquindio.proyecto.repositorios;
 
-import co.edu.uniquindio.proyecto.dto.moderadordtos.RevisarComentariosDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ComentariosRepo extends MongoRepository<Comentario,String> {
-    List<Comentario>findByCodigoNegocio(String codigo);
+    Optional<Comentario> findById(String id);
 
+    @Query("{'codigoNegocio': ?0}")
+    List<Comentario> findByNegocioId(String codigoNegocio);
+
+    @Query(value = "{'codigoNegocio': ?0}", fields = "{'calificacion': 1}")
+    List<Double> findCalificacionByCodigoNegocio(String codigoNegocio);
+
+    int contarNumeroComentariosNegocio(String codigoNegocio);
 }
