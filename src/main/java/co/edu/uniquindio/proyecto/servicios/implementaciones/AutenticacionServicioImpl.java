@@ -1,8 +1,11 @@
 package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
 import co.edu.uniquindio.proyecto.dto.TokenDTO;
+import co.edu.uniquindio.proyecto.dto.moderadordtos.SesionModeradorDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.SesionDto;
+import co.edu.uniquindio.proyecto.model.Documents.Moderador;
 import co.edu.uniquindio.proyecto.model.Documents.Usuario;
+import co.edu.uniquindio.proyecto.repositorios.ModeradorRepo;
 import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AutenticacionServicio;
 import co.edu.uniquindio.proyecto.utils.JWUtils;
@@ -20,9 +23,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AutenticacionServicioImpl implements AutenticacionServicio {
     private final UsuariosRepo usuariosRepo;
+    private final ModeradorRepo moderadorRepo;
     private final JWUtils jwtUtils;
     @Override
-    public TokenDTO iniciarSesionCliente(SesionDto sesionDto) throws Exception {
+    public TokenDTO iniciarSesionUsuario(SesionDto sesionDto) throws Exception {
         Optional<Usuario> usuarioOptional = usuariosRepo.findByEmail(sesionDto.email());
         if (usuarioOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
@@ -38,4 +42,23 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
         map.put("id", usuario.getCodigo());
         return new TokenDTO( jwtUtils.generarToken(usuario.getEmail(), map) );
     }
+
+    @Override
+    public TokenDTO iniciarSesionModerador(SesionModeradorDTO sesionModeradorDTO) throws Exception {
+        Optional<Moderador> usuarioOptional = moderadorRepo.findByEmail(sesionModeradorDTO.email());
+        if (usuarioOptional.isEmpty()) {
+            throw new Exception("El correo no se encuentra registrado");
+        }
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Moderador moderador = usuarioOptional.get();
+        if( !passwordEncoder.matches(sesionModeradorDTO.password(), moderador.getPassword()) ) {
+            throw new Exception("La contraseña es incorrecta");
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("rol", "MODERADOR");
+        map.put("nombre", moderador.getNombre());
+        map.put("id", moderador.getCodigo());
+        return new TokenDTO( jwtUtils.generarToken(moderador.getEmail(), map) );
+    }
+
 }
