@@ -16,15 +16,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Document ("Usuarios")
 
 public class Usuario extends Cuenta{
     @Id
-    @EqualsAndHashCode.Include
     private String codigo;
     private String nombreUsuario,ciudad,fotoPerfil;
     private List<Revision>historialDeRevisiones;
     private List<String>favoritos;
     private List<String>historialBusqueda;
+
 }
