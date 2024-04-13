@@ -1,15 +1,21 @@
 package co.edu.uniquindio.proyecto.servicios.interfaces;
 
-import co.edu.uniquindio.proyecto.dto.usuariosdtos.ActualizarClienteDto;
-import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
-import co.edu.uniquindio.proyecto.dto.usuariosdtos.MostrarPerfilDTO;
-import co.edu.uniquindio.proyecto.dto.usuariosdtos.RegistroClienteDto;
+import co.edu.uniquindio.proyecto.dto.usuariosdtos.*;
 
-public interface UsuarioServicio extends CuentaServicio{
+import java.util.List;
 
-    String registrarse(RegistroClienteDto registroClienteDTO)throws Exception;
+public interface UsuarioServicio extends CuentaServicio {
 
-    void editarPerfil(ActualizarClienteDto actualizarClienteDTO)throws Exception;
-    void actualizarPassword(CambioPasswordDto cambioPasswordDto)throws Exception;
-    void mostrarPerfil(MostrarPerfilDTO mostrarPerfilDTO)throws Exception;
+    String registrarse(RegistroClienteDto registroClienteDTO) throws Exception;
+
+    void editarPerfil(ActualizarClienteDto actualizarClienteDTO) throws Exception;
+
+    void actualizarPassword(CambioPasswordDto cambioPasswordDto) throws Exception;
+
+    MostrarPerfilDTO mostrarPerfil(String codigo) throws Exception;
+
+    void eliminarPerfil(String codigo) throws Exception;
+
+    List<ItemUsuarioDTO> listarClientes(String busqueda) throws Exception;
 }
+

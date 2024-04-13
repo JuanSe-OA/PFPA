@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface ModeradorRepo extends MongoRepository<Moderador,String> {
     @Override
     Optional<Moderador> findById(String s);
+    Optional<Moderador> findByEmail(String email);
 
 }

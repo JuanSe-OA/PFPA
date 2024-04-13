@@ -16,5 +16,6 @@ public interface ModeradorServicio extends CuentaServicio {
     void revisarNegocio(RevisionesModeradorDTO revisionesModeradorDTO)throws Exception;
     void rechazarNegocio(RevisionesModeradorDTO revisionesModeradorDTO)throws Exception;
 
-    List<RevisarComentariosDTO> revisarComentarios(RevisarComentariosDTO revisarComentariosDTO)throws Exception;
+    List<RevisarComentariosDTO> revisarComentarios(String codigo)throws Exception;
+    void bloquearUsuario(String codigo)throws Exception;
 }
