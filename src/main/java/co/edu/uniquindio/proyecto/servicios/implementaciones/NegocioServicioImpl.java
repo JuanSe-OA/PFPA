@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
 import co.edu.uniquindio.proyecto.dto.negociodtos.*;
-import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import co.edu.uniquindio.proyecto.model.Entidades.Horario;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +22,13 @@ public class NegocioServicioImpl implements NegocioServicio {
     private final NegociosRepo negocioRepo;
     private final ComentarioServicioImpl comentarioServicio;
     private final ComentariosRepo comentariosRepo;
+    private final UsuarioServicioImpl usuarioServicio;
 
-    public NegocioServicioImpl(NegociosRepo negocioRepo, ComentarioServicioImpl comentarioServicio, ComentariosRepo comentariosRepo) {
+    public NegocioServicioImpl(NegociosRepo negocioRepo, ComentarioServicioImpl comentarioServicio, ComentariosRepo comentariosRepo, UsuarioServicioImpl usuarioServicio) {
         this.negocioRepo = negocioRepo;
         this.comentarioServicio = comentarioServicio;
         this.comentariosRepo = comentariosRepo;
+        this.usuarioServicio = usuarioServicio;
     }
 
     @Override
@@ -140,7 +140,22 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public DetalleNegocioPropioDTO obtenerDetalleNegocioPropio(String codigoNegocio) throws Exception {
-        return null;
+        Optional<Negocio> optionalNegocio=negocioRepo.findById(codigoNegocio);
+        if(optionalNegocio.isEmpty()){
+            throw new Exception("No se ha podido encontrar el negocio");
+        }
+        Negocio n= optionalNegocio.get();
+        double calificacion = comentarioServicio.calcularPromedioCalificaciones(n.getCodigo());
+        DetalleNegocioPropioDTO detalleNegocioPropio= new DetalleNegocioPropioDTO(
+                n.getCodigo(),
+                n.getNombre(),
+                n.getDescripcion(),
+                calificacion,
+                n.getTelefonos(),
+                n.getDireccion(),
+                n.getHorarios(),
+                n.getImagenes());
+        return detalleNegocioPropio;
     }
 
     @Override
@@ -185,8 +200,32 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario) {
-        return null;
+    public List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario)throws Exception {
+        List<ItemListarNegociosDTO> negociosFavoritosDTOs= new ArrayList<>();
+        List<String> favoritos= usuarioServicio.listarNegociosFavoritos(codigoUsuario);
+        for(String codigo: favoritos){
+            Optional<Negocio> optionalNegocio = negocioRepo.findById(codigo);
+            if(optionalNegocio.isEmpty()){
+                throw new Exception("No se ha podido encontrar el negocio");
+            }
+            Negocio n= optionalNegocio.get();
+            double calificacion = comentarioServicio.calcularPromedioCalificaciones(n.getCodigo());
+            int numCalificaciones = comentarioServicio.calcularNumeroComentarios(n.getCodigo());
+            Horario dia= definirDia(n);
+            String estadoActual =definirEstadoActual(dia);
+            String horaCierre= definirHoraCierre(dia);
+            negociosFavoritosDTOs.add(new ItemListarNegociosDTO(
+                    n.getCodigo(),
+                    n.getNombre(),
+                    calificacion,
+                    numCalificaciones,
+                    n.getTipoNegocio(),
+                    horaCierre,
+                    estadoActual,
+                    n.getDireccion(),
+                    n.getImagenes()));
+        }
+        return negociosFavoritosDTOs;
     }
 
     @Override
@@ -212,7 +251,7 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     }
 
-    public String definirEstadoActual(Negocio n){
+    public String definirEstadoActual(Horario dia){
         String estado="";
         LocalTime hora= LocalTime.now();
         if(hora.isAfter(dia.getHoraFin()) || hora.isBefore(dia.getHoraInicio()) ){

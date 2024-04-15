@@ -18,7 +18,6 @@ public interface NegocioServicio {
 
     DetalleNegocioDTO obtenerDetalleNegocio(String codigoNegocio)throws Exception;
 
-    List<DetalleNegocioDTO> listarNegociosPropietario(String codigoUsuario);
     List<ItemListarNegociosDTO>buscarNegociosDistancia(double distancia);
     DetalleNegocioPropioDTO obtenerDetalleNegocioPropio (String codigoNegocio) throws Exception;
 
@@ -26,7 +25,7 @@ public interface NegocioServicio {
 
     List<ItemListarNegociosDTO> listarNegociosPropietario(String codigoUsuario);
 
-    List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario);
+    List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario)throws Exception;
 
     void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro)throws Exception;
 
