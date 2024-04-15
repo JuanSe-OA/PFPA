@@ -106,8 +106,14 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         List<Comentario> comentarioList = comentariosRepo.findByNegocioId(codigo);
         List<RevisarComentariosDTO> revisarComentariosDTOS = new ArrayList<>();
         for (Comentario c : comentarioList) {
-            revisarComentariosDTOS.add(new RevisarComentariosDTO(c.getMensaje(), c.getRespuesta(), c.getCodigoUsuario(), codigo, c.getCalificacion(),
-                    c.getFecha()));
+            Optional<Usuario> usuarioOptional = usuariosRepo.findById(c.getCodigoUsuario());
+            if (usuarioOptional.isPresent()) {
+                Usuario usuario = usuarioOptional.get();
+                revisarComentariosDTOS.add(new RevisarComentariosDTO(c.getMensaje(), c.getCodigoUsuario(), usuario.getNombreUsuario(), usuario.getEmail(),
+                        c.getFecha()));
+            }else {
+                throw new Exception("El usuario no existe");
+            }
         }
         return revisarComentariosDTOS;
     }
