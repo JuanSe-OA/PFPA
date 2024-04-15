@@ -16,6 +16,13 @@ import java.util.List;
 @RequestMapping("/api/clientes")
 public class ClienteControlador {
     private final UsuarioServicio usuarioServicio;
+    @PostMapping("/registrar-cliente")
+    public ResponseEntity<MensajeDTO<String>> registrarCliente(@Valid @RequestBody
+                                                               RegistroClienteDto registroClienteDTO)throws Exception{
+        usuarioServicio.registrarse(registroClienteDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Cliente registrado correctamente")
+        );
+    }
 
     @PutMapping("/editar-perfil")
     public ResponseEntity<MensajeDTO<String>> actualizarCliente(@Valid @RequestBody
