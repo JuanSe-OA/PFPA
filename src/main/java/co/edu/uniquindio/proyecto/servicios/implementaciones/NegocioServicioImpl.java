@@ -176,11 +176,6 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocioRepo.save(negocio);
     }
 
-    @Override
-    public void registrarRevision() {
-
-    }
-
     public String definirEstadoActual(Negocio n){
         String estado="";
         return  estado;
