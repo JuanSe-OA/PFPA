@@ -10,7 +10,7 @@ public interface ComentarioServicio {
 
     void responderComentario(String codigoComentario, String mensaje)throws Exception;
 
-    List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio);
+    List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio)throws Exception;
 
     double calcularPromedioCalificaciones(String codigoNegocio);
 }

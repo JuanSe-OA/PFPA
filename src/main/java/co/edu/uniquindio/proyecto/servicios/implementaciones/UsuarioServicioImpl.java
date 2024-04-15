@@ -128,4 +128,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private boolean existeEmail(String email) {
         return usuariosRepo.findByEmail(email).isPresent();
     }
+
+    public List<String> listarNegociosFavoritos(String codigoUsuario){
+        List<String> codigoNegociosFavoritos= usuariosRepo.findFavoritos();
+        return codigoNegociosFavoritos;
+    }
 }
