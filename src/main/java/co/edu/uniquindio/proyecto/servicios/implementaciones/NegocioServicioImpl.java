@@ -190,6 +190,11 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
+    public List<ItemListarNegociosDTO> buscarNegociosDistancia(double distancia) {
+        return List.of();
+    }
+
+    @Override
     public void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro) throws Exception{
         Optional<Negocio> optionalNegocio = negocioRepo.findById(codigoNegocio);
 
@@ -207,7 +212,7 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     }
 
-    public String definirEstadoActual(Horario dia){
+    public String definirEstadoActual(Negocio n){
         String estado="";
         LocalTime hora= LocalTime.now();
         if(hora.isAfter(dia.getHoraFin()) || hora.isBefore(dia.getHoraInicio()) ){
@@ -221,6 +226,16 @@ public class NegocioServicioImpl implements NegocioServicio {
     public String definirHoraCierre(Horario dia ){
         String horaCierre= String.valueOf(dia.getHoraFin());
         return horaCierre;
+    }
+    public double calcularDistancia(Negocio n,double latitud,double longitud){
+        double distanciaLatitud = Math.abs(latitud - n.getUbicacion().getLatitud());
+        double distanciaLongitud = Math.abs(longitud - n.getUbicacion().getLongitud());
+        //Fórmula de Haversine para calculas la distancia en km
+
+        double distancia = Math.sqrt(Math.pow(distanciaLatitud*111*Math.cos( n.getUbicacion().getLatitud()*Math.PI/180),2)) +
+                Math.pow(distanciaLatitud*111,2);
+        return distancia;
+
     }
 
     public Horario definirDia(Negocio n){
