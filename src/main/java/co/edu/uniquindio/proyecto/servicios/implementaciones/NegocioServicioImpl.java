@@ -1,11 +1,9 @@
 package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
-import co.edu.uniquindio.proyecto.dto.negociodtos.ActualizarNegocioDTO;
-import co.edu.uniquindio.proyecto.dto.negociodtos.CrearNegocioDTO;
-import co.edu.uniquindio.proyecto.dto.negociodtos.DetalleNegocioDTO;
-import co.edu.uniquindio.proyecto.dto.negociodtos.ItemListarNegociosDTO;
+import co.edu.uniquindio.proyecto.dto.negociodtos.*;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
+import co.edu.uniquindio.proyecto.model.Entidades.Horario;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
 import co.edu.uniquindio.proyecto.repositorios.NegociosRepo;
@@ -15,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,15 +84,16 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public List<ItemListarNegociosDTO> buscarNegocios(String busqueda) {
+    public List<ItemListarNegociosDTO> buscarNegociosPorNombre(String busqueda) {
         List<Negocio> negociosEncontrados = negocioRepo.findByNombreIsLike(busqueda);
 
         List<ItemListarNegociosDTO> detalleNegociosEncontraadosDTOS = new ArrayList<>();
         for(Negocio n : negociosEncontrados){
             double calificacion = comentarioServicio.calcularPromedioCalificaciones(n.getCodigo());
             int numCalificaciones = comentarioServicio.calcularNumeroComentarios(n.getCodigo());
-            String estadoActual =definirEstadoActual(n);
-            String horaCierre= definirHoraCierre(n);
+            Horario dia= definirDia(n);
+            String estadoActual =definirEstadoActual(dia);
+            String horaCierre= definirHoraCierre(dia);
 
             detalleNegociosEncontraadosDTOS.add(new ItemListarNegociosDTO(
                     n.getCodigo(),
@@ -122,8 +122,9 @@ public class NegocioServicioImpl implements NegocioServicio {
         Negocio negocio= optionalNegocio.get();
         double promedio = comentarioServicio.calcularPromedioCalificaciones(negocio.getCodigo());
         int numCalificaciones= comentarioServicio.calcularNumeroComentarios(negocio.getCodigo());
-        String estadoActual =definirEstadoActual(negocio);
-        String horaCierre= definirHoraCierre(negocio);
+        Horario dia= definirDia(negocio);
+        String estadoActual =definirEstadoActual(dia);
+        String horaCierre= definirHoraCierre(dia);
 
         DetalleNegocioDTO detalleNegocioDTO = new DetalleNegocioDTO(
                 negocio.getCodigo(),
@@ -132,30 +133,60 @@ public class NegocioServicioImpl implements NegocioServicio {
                 numCalificaciones,
                 negocio.getTipoNegocio(),
                 horaCierre,
-                estadoActual);
+                estadoActual,
+                negocio.getImagenes());
         return detalleNegocioDTO;
     }
 
     @Override
-    public List<DetalleNegocioDTO> listarNegociosPropietario(String codigoUsuario) {
+    public DetalleNegocioPropioDTO obtenerDetalleNegocioPropio(String codigoNegocio) throws Exception {
+        return null;
+    }
+
+    @Override
+    public ItemNegocioInfoDTO obtenerInformacionNegocio(String codigoNegocio) throws Exception {
+        Optional<Negocio> optionalNegocio=negocioRepo.findById(codigoNegocio);
+        if(optionalNegocio.isEmpty()){
+            throw new Exception("No se ha podido encontrar el negocio");
+        }
+        Negocio n= optionalNegocio.get();
+        ItemNegocioInfoDTO infoNegocio= new ItemNegocioInfoDTO(
+                n.getCodigo(),
+                n.getDescripcion(),
+                n.getDireccion(),
+                n.getTelefonos(),
+                n.getHorarios());
+        return infoNegocio;
+    }
+
+    @Override
+    public List<ItemListarNegociosDTO> listarNegociosPropietario(String codigoUsuario) {
         List<Negocio> negociosPropietario= negocioRepo.findByCodigoUsuario(codigoUsuario);
 
-        List<DetalleNegocioDTO> detalleNegocioDTOS= new ArrayList<>();
+        List<ItemListarNegociosDTO> detalleNegocioDTOS= new ArrayList<>();
         for(Negocio n : negociosPropietario){
             double calificacion = comentarioServicio.calcularPromedioCalificaciones(n.getCodigo());
             int numCalificaciones = comentarioServicio.calcularNumeroComentarios(n.getCodigo());
-            String estadoActual =definirEstadoActual(n);
-            String horaCierre= definirHoraCierre(n);
-            detalleNegocioDTOS.add(new DetalleNegocioDTO(
+            Horario dia= definirDia(n);
+            String estadoActual =definirEstadoActual(dia);
+            String horaCierre= definirHoraCierre(dia);
+            detalleNegocioDTOS.add(new ItemListarNegociosDTO(
                     n.getCodigo(),
                     n.getNombre(),
                     calificacion,
                     numCalificaciones,
                     n.getTipoNegocio(),
                     horaCierre,
-                    estadoActual));
+                    estadoActual,
+                    n.getDireccion(),
+                    n.getImagenes()));
         }
         return detalleNegocioDTOS;
+    }
+
+    @Override
+    public List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario) {
+        return null;
     }
 
     @Override
@@ -176,15 +207,27 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     }
 
-    public String definirEstadoActual(Negocio n){
+    public String definirEstadoActual(Horario dia){
         String estado="";
+        LocalTime hora= LocalTime.now();
+        if(hora.isAfter(dia.getHoraFin()) || hora.isBefore(dia.getHoraInicio()) ){
+            estado = "Cerrado";
+        }else{
+            estado="Abierto";
+        }
         return  estado;
     }
 
-    public String definirHoraCierre(Negocio n ){
-        String horaCierre="";
-        LocalDateTime horaDiaActual = LocalDateTime.now();
-        String dia= String.valueOf(horaDiaActual.getDayOfWeek());
+    public String definirHoraCierre(Horario dia ){
+        String horaCierre= String.valueOf(dia.getHoraFin());
         return horaCierre;
+    }
+
+    public Horario definirDia(Negocio n){
+        LocalDate fechaActual = LocalDate.now();
+        String dia= String.valueOf(fechaActual.getDayOfWeek());
+        Optional<Horario> horarioHoy= n.getHorarios().stream().filter(horario -> horario.getDia().equals(dia)).findFirst();
+        Horario hoy= horarioHoy.get();
+        return hoy;
     }
 }
