@@ -3,7 +3,9 @@ package co.edu.uniquindio.proyecto.servicios.implementaciones;
 import co.edu.uniquindio.proyecto.dto.comentariodtos.CrearComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
+import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
+import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ComentarioServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +19,11 @@ import java.util.Optional;
 public class ComentarioServicioImpl implements ComentarioServicio {
 
     private final ComentariosRepo comentariosRepo;
+    private final UsuariosRepo usuarioRepo;
 
-    public ComentarioServicioImpl(ComentariosRepo comentariosRepo) {
+    public ComentarioServicioImpl(ComentariosRepo comentariosRepo, UsuariosRepo usuarioRepo) {
         this.comentariosRepo = comentariosRepo;
+        this.usuarioRepo = usuarioRepo;
     }
 
     @Override
@@ -52,12 +56,25 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     }
 
     @Override
-    public List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio) {
+    public List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio)throws Exception {
         List<Comentario> comentariosNegocio = comentariosRepo.findByNegocioId(codigoNegocio);
 
         List<ItemComentarioDTO> itemsComentariosNegocio = new ArrayList<>();
         for(Comentario c: comentariosNegocio){
-
+            Optional<Usuario> optionalUsuario = usuarioRepo.findById(c.getCodigoUsuario());
+            if(optionalUsuario.isEmpty()){
+                throw new Exception("El usuario dueño de un comentario no ha sido encontrado");
+            }
+            Usuario u = optionalUsuario.get();
+            ItemComentarioDTO itemComentarioDTO = new ItemComentarioDTO(
+                    u.getFotoPerfil(),
+                    u.getNombreUsuario(),
+                    c.getCodigo(),
+                    c.getMensaje(),
+                    c.getRespuesta(),
+                    c.getCalificacion(),
+                    c.getFecha());
+            itemsComentariosNegocio.add(itemComentarioDTO);
         }
         return itemsComentariosNegocio;
     }

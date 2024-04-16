@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -59,6 +60,15 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
         map.put("nombre", moderador.getNombre());
         map.put("id", moderador.getCodigo());
         return new TokenDTO( jwtUtils.generarToken(moderador.getEmail(), map) );
+    }
+
+    @Override
+    public TokenDTO sesionUsuarioNoAutenticado() {
+        String uniqueId= UUID.randomUUID().toString();
+        Map<String, Object> map= new HashMap<>();
+        map.put("rol","USUARIO_NO_AUTENTICADO");
+        map.put("id",uniqueId);
+        return new TokenDTO(jwtUtils.generarToken(uniqueId,map));
     }
 
 }

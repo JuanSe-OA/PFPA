@@ -38,7 +38,7 @@ public class FiltroToken extends OncePerRequestFilter {
             String token = getToken(request);
             boolean error = true;
             try {
-//Si la petición es para la ruta /api/clientes se verifica que el token sea correcto y que el rol sea CLIENTE
+//Si la petición es para la ruta /api/clientes/registrar-cliente se verifica que el token sea correcto y que el rol sea USUARIO_NO_AUTENTICADO
                 if (requestURI.startsWith("/api/clientes")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
@@ -55,6 +55,7 @@ public class FiltroToken extends OncePerRequestFilter {
 
                                 HttpServletResponse.SC_FORBIDDEN, response);
                     }
+ //Si la petición es para la ruta /api/moderadores se verifica que el token sea correcto y que el rol sea MODERADOR
                 } else if(requestURI.startsWith("/api/moderadores")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
@@ -66,6 +67,89 @@ public class FiltroToken extends OncePerRequestFilter {
                         }
                     }
                     else {
+                        crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                HttpServletResponse.SC_FORBIDDEN, response);
+                    }
+//Si la petición es para la ruta /api/comentarios/listar-comentarios-negocio se verifica que el token sea correcto y que el rol sea CLIENTE o USUARIO_NO_AUTENTICADO
+                }else if(requestURI.startsWith("/api/comentarios/listar-comentarios-negocio")){
+                    if (token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!(jws.getPayload().get("rol").equals("USUARIO_NO_AUTENTICADO")|| jws.getPayload().get("rol").equals("CLIENTE"))) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                    HttpServletResponse.SC_FORBIDDEN, response);
+
+                        } else {
+                            error = false;
+                        }
+                    } else {
+                        crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                HttpServletResponse.SC_FORBIDDEN, response);
+                    }
+ //Si la petición es para la ruta /api/comentarios se verifica que el token sea correcto y que el rol sea CLIENTE
+                } else if (requestURI.startsWith("/api/comentarios")) {
+                    if (token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!jws.getPayload().get("rol").equals("CLIENTE")) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                    HttpServletResponse.SC_FORBIDDEN, response);
+
+                        } else {
+                            error = false;
+                        }
+                    } else {
+                        crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                HttpServletResponse.SC_FORBIDDEN, response);
+                    }
+//Si la petición es para la ruta /api/imagenes se verifica que el token sea correcto y que el rol sea CLIENTE
+                }else if (requestURI.startsWith("/api/imagenes")) {
+                    if (token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!jws.getPayload().get("rol").equals("CLIENTE")) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                    HttpServletResponse.SC_FORBIDDEN, response);
+
+                        } else {
+                            error = false;
+                        }
+                    } else {
+                        crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                HttpServletResponse.SC_FORBIDDEN, response);
+                    }
+                } else if (requestURI.startsWith("")|| requestURI.startsWith("") || requestURI.startsWith("") || requestURI.startsWith("")) {
+                    if (token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!(jws.getPayload().get("rol").equals("USUARIO_NO_AUTENTICADO")|| jws.getPayload().get("rol").equals("CLIENTE"))) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                    HttpServletResponse.SC_FORBIDDEN, response);
+
+                        } else {
+                            error = false;
+                        }
+                    } else {
+                        crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                HttpServletResponse.SC_FORBIDDEN, response);
+                    }
+                } else if (requestURI.startsWith("/api/negocios")) {
+                    if (token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!jws.getPayload().get("rol").equals("CLIENTE")) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                                    HttpServletResponse.SC_FORBIDDEN, response);
+
+                        } else {
+                            error = false;
+                        }
+                    } else {
                         crearRespuestaError("No tiene permisos para acceder a este recurso",
 
                                 HttpServletResponse.SC_FORBIDDEN, response);
