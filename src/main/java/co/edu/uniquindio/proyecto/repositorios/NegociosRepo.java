@@ -16,7 +16,7 @@ public interface NegociosRepo extends MongoRepository <Negocio,String> {
 
     Optional<Negocio> findById(String id);
 
-    List<Negocio> findByNombre(String nombre);
+    //List<Negocio> findByNombre(String nombre);
 
     @Query("{'codigoUsuario': ?0}")
     List<Negocio> findByCodigoUsuario(String codigoUsuario);
