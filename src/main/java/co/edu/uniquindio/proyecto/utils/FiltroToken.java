@@ -71,23 +71,6 @@ public class FiltroToken extends OncePerRequestFilter {
 
                                 HttpServletResponse.SC_FORBIDDEN, response);
                     }
-//Si la petición es para la ruta /api/comentarios/listar-comentarios-negocio se verifica que el token sea correcto y que el rol sea CLIENTE o USUARIO_NO_AUTENTICADO
-                }else if(requestURI.startsWith("/api/comentarios/listar-comentarios-negocio")){
-                    if (token != null) {
-                        Jws<Claims> jws = jwtUtils.parseJwt(token);
-                        if (!(jws.getPayload().get("rol").equals("USUARIO_NO_AUTENTICADO")|| jws.getPayload().get("rol").equals("CLIENTE"))) {
-                            crearRespuestaError("No tiene permisos para acceder a este recurso",
-
-                                    HttpServletResponse.SC_FORBIDDEN, response);
-
-                        } else {
-                            error = false;
-                        }
-                    } else {
-                        crearRespuestaError("No tiene permisos para acceder a este recurso",
-
-                                HttpServletResponse.SC_FORBIDDEN, response);
-                    }
  //Si la petición es para la ruta /api/comentarios se verifica que el token sea correcto y que el rol sea CLIENTE
                 } else if (requestURI.startsWith("/api/comentarios")) {
                     if (token != null) {
@@ -122,22 +105,7 @@ public class FiltroToken extends OncePerRequestFilter {
 
                                 HttpServletResponse.SC_FORBIDDEN, response);
                     }
-                } else if (requestURI.startsWith("")|| requestURI.startsWith("") || requestURI.startsWith("") || requestURI.startsWith("")) {
-                    if (token != null) {
-                        Jws<Claims> jws = jwtUtils.parseJwt(token);
-                        if (!(jws.getPayload().get("rol").equals("USUARIO_NO_AUTENTICADO")|| jws.getPayload().get("rol").equals("CLIENTE"))) {
-                            crearRespuestaError("No tiene permisos para acceder a este recurso",
-
-                                    HttpServletResponse.SC_FORBIDDEN, response);
-
-                        } else {
-                            error = false;
-                        }
-                    } else {
-                        crearRespuestaError("No tiene permisos para acceder a este recurso",
-
-                                HttpServletResponse.SC_FORBIDDEN, response);
-                    }
+//Si la petición es para la ruta /api/negocios se verifica que el token sea correcto y que el rol sea CLIENTE
                 } else if (requestURI.startsWith("/api/negocios")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
@@ -155,7 +123,6 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
                     }
                 }
-//Agregar más validaciones para otros roles y recursos (rutas de la API) aquí
             } catch (MalformedJwtException e) {
                 crearRespuestaError("El token es incorrecto",
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);
