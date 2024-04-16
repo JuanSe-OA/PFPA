@@ -1,9 +1,7 @@
 package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
 import co.edu.uniquindio.proyecto.dto.EmailDTO;
-import co.edu.uniquindio.proyecto.dto.moderadordtos.CambiarPasswordModeradorDTO;
-import co.edu.uniquindio.proyecto.dto.moderadordtos.RevisarComentariosDTO;
-import co.edu.uniquindio.proyecto.dto.moderadordtos.RevisionesModeradorDTO;
+import co.edu.uniquindio.proyecto.dto.moderadordtos.*;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.model.Documents.Moderador;
@@ -61,6 +59,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setCodigoModerador(revisionesModeradorDTO.codigoModerador());
         revision.setCodigoEntidad(revisionesModeradorDTO.codigoNegocio());
         revision.setEstado(EstadoRevision.APROVADO);
+        negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
         revision.setFecha(revisionesModeradorDTO.fecha());
         negocio.getHistorialRevisiones().add(revision);
     }
@@ -77,6 +76,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setCodigoModerador(revisionesModeradorDTO.codigoModerador());
         revision.setCodigoEntidad(revisionesModeradorDTO.codigoNegocio());
         revision.setEstado(EstadoRevision.PENDIENTE);
+        negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         revision.setFecha(revisionesModeradorDTO.fecha());
         negocio.getHistorialRevisiones().add(revision);
 
@@ -95,6 +95,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setCodigoEntidad(revisionesModeradorDTO.codigoNegocio());
         revision.setEstado(EstadoRevision.RECHAZADO);
         revision.setFecha(revisionesModeradorDTO.fecha());
+        negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         negocio.getHistorialRevisiones().add(revision);
     }
 
@@ -104,18 +105,18 @@ public class ModeradorServicioImpl implements ModeradorServicio {
             throw new Exception("El negocio no se ecnuentra registrado");
         }
         List<Comentario> comentarioList = comentariosRepo.findByNegocioId(codigo);
-        List<RevisarComentariosDTO> revisarComentariosDTOS = new ArrayList<>();
+        List<RevisarComentariosDTO> revisarComentariosDTOSList = new ArrayList<>();
         for (Comentario c : comentarioList) {
             Optional<Usuario> usuarioOptional = usuariosRepo.findById(c.getCodigoUsuario());
             if (usuarioOptional.isPresent()) {
                 Usuario usuario = usuarioOptional.get();
-                revisarComentariosDTOS.add(new RevisarComentariosDTO(c.getMensaje(), c.getCodigoUsuario(), usuario.getNombreUsuario(), usuario.getEmail(),
+                revisarComentariosDTOSList.add(new RevisarComentariosDTO(c.getMensaje(), c.getCodigoUsuario(), usuario.getNombreUsuario(), usuario.getEmail(),
                         c.getFecha()));
             }else {
                 throw new Exception("El usuario no existe");
             }
         }
-        return revisarComentariosDTOS;
+        return revisarComentariosDTOSList;
     }
 
     @Override
@@ -131,5 +132,33 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         String cuerpo = "Usted ha incumplido con las normas de la página";
         String correo = usuario.getEmail();
         emailServicio.enviarCorreo(new EmailDTO(asunto,cuerpo,correo));
+    }
+
+    @Override
+    public List<ItemNegociosRevisionDTO> listarRevisiones(EstadoRevision estadoRevision) throws Exception {
+        List<Negocio>negocios = negociosRepo.findByEstadoRevision(estadoRevision);
+        List<ItemNegociosRevisionDTO> itemNegociosRevisionDTOSList = new ArrayList<>();
+        for (Negocio negocio : negocios) {
+            itemNegociosRevisionDTOSList.add(new ItemNegociosRevisionDTO(negocio.getNombre(), negocio.getDescripcion(),
+                    negocio.getTelefonos(), negocio.getDireccion(), negocio.getHorarios(),
+                    negocio.getTipoNegocio(),negocio.getImagenes()));
+        }
+        return itemNegociosRevisionDTOSList;
+    }
+
+    @Override
+    public ItemNegociosRevisionDTO revisarNegocio(String codigo) throws Exception {
+        Optional<Negocio> optionalNegocio = negociosRepo.findById(codigo);
+        if (optionalNegocio.isPresent()) {
+            Negocio negocio = optionalNegocio.get();
+            ItemNegociosRevisionDTO itemNegociosRevisionDTO = new ItemNegociosRevisionDTO(
+                    negocio.getNombre(),
+                    negocio.getDescripcion(), negocio.getTelefonos(),
+                    negocio.getDireccion(), negocio.getHorarios(),
+                    negocio.getTipoNegocio(), negocio.getImagenes());
+            return itemNegociosRevisionDTO;
+        } else {
+            throw new Exception("El negocio no existe");
+        }
     }
 }

@@ -28,6 +28,4 @@ public interface NegocioServicio {
     List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario)throws Exception;
 
     void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro)throws Exception;
-
-    void registrarRevision();
 }
