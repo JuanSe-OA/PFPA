@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface UsuariosRepo extends MongoRepository<Usuario,String> {
-    public List<Usuario> findByEstado(EstadoRegistro estadoRegistro);
+    //public List<Usuario> findByEstado(EstadoRegistro estadoRegistro);
     Optional<Usuario>findByEmail(String email);
     Optional<Usuario>findById(String id);
     List<Usuario> findByNombreIsLike(String nombre);

@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.beans.ConstructorProperties;
 import java.util.List;
 @Getter
-@Builder
+//@Builder
 @Setter
 @ToString
 @Data
