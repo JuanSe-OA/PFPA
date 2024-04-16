@@ -25,4 +25,5 @@ public interface NegocioServicio {
     List<ItemListarNegociosDTO>buscarNegociosDistancia(double distancia);
 
     void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro)throws Exception;
+
 }
