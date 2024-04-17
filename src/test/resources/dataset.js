@@ -1,5 +1,5 @@
 db = connect( 'mongodb://root:example@localhost:27017/proyecto?authSource=admin' );
-db.usuarios.insertMany([
+db.Usuarios.insertMany([
     {
         _id: 'Cliente4',
         nickname: 'maria01',
@@ -24,7 +24,7 @@ db.usuarios.insertMany([
     }
 
 ]);
-db.negocios.insertMany([
+db.Negocios.insertMany([
     {
         _id: 'Negocio2',
         nombre: 'Tienda de Ropa',
@@ -134,7 +134,7 @@ db.negocios.insertMany([
         _class: 'co.edu.uniquindio.proyecto.model.Documents.Negocio'
     }
 ]);
-db.comentarios.insertMany([
+db.Comentarios.insertMany([
     {
         mensaje: "Excelente sitio, muy buena atención",
         fecha: new Date(),

@@ -3,13 +3,17 @@ package co.edu.uniquindio.proyecto.servicios.implementaciones;
 import co.edu.uniquindio.proyecto.dto.comentariodtos.CrearComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
+import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
+import co.edu.uniquindio.proyecto.repositorios.NegociosRepo;
 import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ComentarioServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,11 +31,11 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     }
 
     @Override
-    public String crearComentario(CrearComentarioDTO crearComentarioDTO) {
+    public String crearComentario(CrearComentarioDTO crearComentarioDTO) throws Exception{
         Comentario comentario= new Comentario();
 
         comentario.setMensaje(crearComentarioDTO.mensaje());
-        comentario.setFecha(crearComentarioDTO.fecha());
+        comentario.setFecha(LocalDate.now());
         comentario.setCalificacion(crearComentarioDTO.calificacion());
         comentario.setCodigoUsuario(crearComentarioDTO.codigoUsuario());
         comentario.setCodigoNegocio(crearComentarioDTO.codigoNegocio());

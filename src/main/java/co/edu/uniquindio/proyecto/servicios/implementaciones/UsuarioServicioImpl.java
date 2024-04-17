@@ -109,7 +109,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new Exception("No se encontró un usuario con esa id");
         }
         Usuario usuario = usuarioOptional.get();
-        usuariosRepo.delete(usuario);
+        usuario.setEstadoCuenta(EstadoRegistro.INACTIVO);
     }
 
     @Override
