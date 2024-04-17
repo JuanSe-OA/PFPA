@@ -16,11 +16,14 @@ import co.edu.uniquindio.proyecto.repositorios.NegociosRepo;
 import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ModeradorServicio;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Service
+@Transactional
 public class ModeradorServicioImpl implements ModeradorServicio {
     private final ModeradorRepo moderadorRepo;
     private final NegociosRepo negociosRepo;

@@ -8,11 +8,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 public record CrearComentarioDTO(
-        @NotBlank @Id String id,
         @NotBlank String mensaje,
         @NotBlank String codigoUsuario,
         @NotBlank String codigoNegocio,
         @Range(min=1, max=5)
-        @NotBlank double calificacion,
-        @NotBlank LocalDate fecha) {
+        @NotBlank double calificacion) {
 }
