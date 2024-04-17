@@ -24,5 +24,6 @@ public interface NegociosRepo extends MongoRepository <Negocio,String> {
     List<Negocio> findByCodigoUsuario(String codigoUsuario);
 
     List<Negocio> findByNombreIsLike(String nombre);
+    @Query("{'historialRevisiones.estado': ?0}")
     List<Negocio> findByEstadoRevision(EstadoRevision estadoRevision);
 }

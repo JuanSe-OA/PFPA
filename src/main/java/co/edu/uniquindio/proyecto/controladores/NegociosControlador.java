@@ -48,7 +48,7 @@ public class NegociosControlador {
         return  ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.obtenerInformacionNegocio(codigoNegocio)));
     }
     @GetMapping("/listar-negocios-propietario/{codigoUsuario}")
-    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> listarNegociosPropietario(@PathVariable String codigoUsuario){
+    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> listarNegociosPropietario(@PathVariable String codigoUsuario)throws Exception{
         return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.listarNegociosPropietario(codigoUsuario)));
     }
     @GetMapping("/listar-negocios-favoritos/{codigoUsuario}")

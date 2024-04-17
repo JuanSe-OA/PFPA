@@ -23,7 +23,7 @@ public interface NegocioServicio {
 
     ItemNegocioInfoDTO obtenerInformacionNegocio(String codigoNegocio) throws Exception;
 
-    List<ItemListarNegociosDTO> listarNegociosPropietario(String codigoUsuario);
+    List<ItemListarNegociosDTO> listarNegociosPropietario(String codigoUsuario)throws Exception;
 
     List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario)throws Exception;
 

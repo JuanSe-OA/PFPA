@@ -17,6 +17,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -65,6 +66,7 @@ public class ComentarioServicioImpl implements ComentarioServicio {
 
         List<ItemComentarioDTO> itemsComentariosNegocio = new ArrayList<>();
         for(Comentario c: comentariosNegocio){
+            System.out.println(c.getCodigoUsuario());
             Optional<Usuario> optionalUsuario = usuarioRepo.findById(c.getCodigoUsuario());
             if(optionalUsuario.isEmpty()){
                 throw new Exception("El usuario dueño de un comentario no ha sido encontrado");
@@ -85,12 +87,13 @@ public class ComentarioServicioImpl implements ComentarioServicio {
 
     @Override
     public double calcularPromedioCalificaciones(String codigoNegocio) {
-        List<Double> calificacionesNegocio = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
+        List<Comentario> comentarios = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
+        List<Double> calificacionesNegocio= comentarios.stream().map(Comentario::getCalificacion).collect(Collectors.toList());
         return calificacionesNegocio.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
     }
 
     public int calcularNumeroComentarios(String codigoNegocio){
-        List<Double> calificacionesNegocio = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
+        List<Comentario> calificacionesNegocio = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
         return calificacionesNegocio.size();
     }
 }

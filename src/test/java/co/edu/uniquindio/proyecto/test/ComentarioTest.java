@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.test;
 
 import co.edu.uniquindio.proyecto.dto.comentariodtos.CrearComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
 import co.edu.uniquindio.proyecto.servicios.implementaciones.ComentarioServicioImpl;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -45,6 +47,23 @@ public class ComentarioTest {
 
         // Verificar que la respuesta no sea nula
         Assertions.assertNotNull(comentarioGuardado.get().getRespuesta(), "La respuesta del comentario es nula");
+    }
 
+    @Test
+    public void listarComentariosNegocioTest()throws Exception{
+        List<ItemComentarioDTO> itemsComentariosNegocio= comentarioServicioImpl.listarComentariosNegocio("Negocio4");
+        Assertions.assertFalse(itemsComentariosNegocio.isEmpty());
+    }
+
+    @Test
+    public void calcularPromedioCalificacionesTest(){
+        double promedio = comentarioServicioImpl.calcularPromedioCalificaciones("Negocio9");
+        Assertions.assertEquals(promedio,0);
+    }
+
+    @Test
+    public void calcularPromedioCalificacionesOkTest(){
+        double promedio = comentarioServicioImpl.calcularPromedioCalificaciones("Negocio4");
+        Assertions.assertEquals(promedio,4);
     }
 }

@@ -31,6 +31,6 @@ public class Negocio implements Serializable {
     private EstadoRegistro estadoRegistro;
     private List<Horario>horarios;
     private Ubicacion ubicacion;
-    private List<Revision> HistorialRevisiones;
+    private List<Revision> historialRevisiones;
 
 }
