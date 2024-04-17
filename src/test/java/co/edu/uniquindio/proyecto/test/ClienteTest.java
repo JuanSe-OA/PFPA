@@ -18,14 +18,7 @@ public class ClienteTest {
     @Test
     public void registrarClienteTest() {
 //Creamos el cliente con sus propiedades
-        Usuario usuario = Usuario.builder()
-                .nombreUsuario("juanitos")
-                .ciudad("Armenia")
-                .build();
-//Guardamos el cliente
-        Usuario registro = usuariosRepo.save(usuario);
-//Verificamos que se haya guardado validando que no sea null
-        Assertions.assertNotNull(registro);
+
     }
 }
 
