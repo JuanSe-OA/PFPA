@@ -21,13 +21,11 @@ import java.util.Optional;
 public class NegocioServicioImpl implements NegocioServicio {
     private final NegociosRepo negocioRepo;
     private final ComentarioServicioImpl comentarioServicio;
-    private final ComentariosRepo comentariosRepo;
     private final UsuarioServicioImpl usuarioServicio;
 
-    public NegocioServicioImpl(NegociosRepo negocioRepo, ComentarioServicioImpl comentarioServicio, ComentariosRepo comentariosRepo, UsuarioServicioImpl usuarioServicio) {
+    public NegocioServicioImpl(NegociosRepo negocioRepo, ComentarioServicioImpl comentarioServicio, UsuarioServicioImpl usuarioServicio) {
         this.negocioRepo = negocioRepo;
         this.comentarioServicio = comentarioServicio;
-        this.comentariosRepo = comentariosRepo;
         this.usuarioServicio = usuarioServicio;
     }
 

@@ -6,7 +6,7 @@ import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
 import java.util.List;
 
 public interface ComentarioServicio {
-    String crearComentario(CrearComentarioDTO crearComentarioDTO);
+    String crearComentario(CrearComentarioDTO crearComentarioDTO)throws Exception;
 
     void responderComentario(String codigoComentario, String mensaje)throws Exception;
 
