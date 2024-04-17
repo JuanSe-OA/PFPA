@@ -5,14 +5,12 @@ import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.negociodtos.DetalleNegocioDTO;
 import co.edu.uniquindio.proyecto.dto.negociodtos.ItemListarNegociosDTO;
 import co.edu.uniquindio.proyecto.dto.negociodtos.ItemNegocioInfoDTO;
+import co.edu.uniquindio.proyecto.dto.negociodtos.ObtenerDistanciaDTO;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ComentarioServicio;
 import co.edu.uniquindio.proyecto.servicios.interfaces.NegocioServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,8 +43,8 @@ public class ServiciosPublicosControlador {
         return  ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.obtenerInformacionNegocio(codigoNegocio)));
     }
 
-    @GetMapping("/buscar-negocios-por-distancia/{distancia}")
-    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> buscarNegociosDistancia(@PathVariable double distancia){
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.buscarNegociosDistancia(distancia)));
+    @GetMapping("/buscar-negocios-por-distancia/negocio")
+    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> buscarNegociosDistancia(@RequestBody ObtenerDistanciaDTO obtenerDistanciaDTO){
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.buscarNegociosDistancia(obtenerDistanciaDTO)));
     }
 }

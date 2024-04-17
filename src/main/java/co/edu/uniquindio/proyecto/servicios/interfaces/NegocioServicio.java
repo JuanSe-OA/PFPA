@@ -18,7 +18,7 @@ public interface NegocioServicio {
 
     DetalleNegocioDTO obtenerDetalleNegocio(String codigoNegocio)throws Exception;
 
-    List<ItemListarNegociosDTO>buscarNegociosDistancia(double distancia);
+    List<ItemListarNegociosDTO>buscarNegociosDistancia(ObtenerDistanciaDTO obtenerDistanciaDTO);
     DetalleNegocioPropioDTO obtenerDetalleNegocioPropio (String codigoNegocio) throws Exception;
 
     ItemNegocioInfoDTO obtenerInformacionNegocio(String codigoNegocio) throws Exception;
