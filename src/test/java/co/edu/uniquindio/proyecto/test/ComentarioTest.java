@@ -32,9 +32,9 @@ public class ComentarioTest {
     @Test
     public void responderComentario_Test() throws Exception {
         // Código de comentario existente en la base de datos
-        String codigoComentario = "661f34e579bc8e47517b0fb4";
+        String codigoComentario = "661f59fd0cf374196659ca70";
         // Mensaje de respuesta
-        String mensajeRespuesta = "Gracias por visitarnos";
+        String mensajeRespuesta = "Gracias por preferirnos";
 
         // Llamada al método a probar
         comentarioServicioImpl.responderComentario(codigoComentario, mensajeRespuesta);

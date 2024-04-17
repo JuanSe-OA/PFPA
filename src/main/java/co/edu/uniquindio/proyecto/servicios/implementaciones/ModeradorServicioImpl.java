@@ -138,8 +138,8 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     }
 
     @Override
-    public List<ItemNegociosRevisionDTO> listarRevisiones(EstadoRevision estadoRevision) throws Exception {
-        List<Negocio>negocios = negociosRepo.findByEstadoRevision(estadoRevision);
+    public List<ItemNegociosRevisionDTO> listarRevisiones(EstadoRegistro estadoRegistro) throws Exception {
+        List<Negocio>negocios = negociosRepo.findByEstadoRegistro(estadoRegistro);
         List<ItemNegociosRevisionDTO> itemNegociosRevisionDTOSList = new ArrayList<>();
         for (Negocio negocio : negocios) {
             itemNegociosRevisionDTOSList.add(new ItemNegociosRevisionDTO(negocio.getNombre(), negocio.getDescripcion(),
