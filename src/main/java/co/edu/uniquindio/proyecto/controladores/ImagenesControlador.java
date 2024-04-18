@@ -16,8 +16,7 @@ import java.util.Map;
 public class ImagenesControlador {
     private final ImagenesServicio imagenesServicio;
     @PostMapping("/subir")
-    public ResponseEntity<MensajeDTO<Map>> subir(@RequestParam("file") MultipartFile imagen)
-            throws Exception{
+    public ResponseEntity<MensajeDTO<Map>> subir(@RequestParam("file") MultipartFile imagen) throws Exception{
         Map respuesta = imagenesServicio.subirImagen(imagen);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, respuesta ));
     }

@@ -22,20 +22,17 @@ public class AutenticacionControlador {
     private final UsuarioServicio usuarioServicio;
     private final AutenticacionServicio autenticacionServicio;
     @PostMapping("/login-cliente")
-    public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesionCliente(@Valid @RequestBody
-                                                                     SesionDto loginDTO) throws Exception {
+    public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesionCliente(@Valid @RequestBody SesionDto loginDTO) throws Exception {
         TokenDTO tokenDTO = autenticacionServicio.iniciarSesionUsuario(loginDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, tokenDTO));
     }
     @PostMapping("/login-moderadores")
-    public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesionModerador(@Valid @RequestBody
-                                                                       SesionModeradorDTO sesionModeradorDTO) throws Exception {
+    public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesionModerador(@Valid @RequestBody SesionModeradorDTO sesionModeradorDTO) throws Exception {
         TokenDTO tokenDTO = autenticacionServicio.iniciarSesionModerador(sesionModeradorDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, tokenDTO));
     }
     @PostMapping("/registrar-cliente")
-    public ResponseEntity<MensajeDTO<String>> registrarCliente(@Valid @RequestBody
-                                                               RegistroClienteDto registroClienteDTO)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> registrarCliente(@Valid @RequestBody RegistroClienteDto registroClienteDTO)throws Exception{
         usuarioServicio.registrarse(registroClienteDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Cliente registrado correctamente")
         );

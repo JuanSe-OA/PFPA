@@ -22,27 +22,27 @@ public class ModeradorControlador {
     private final ModeradorServicio moderadorServicio;
 
     @PutMapping("/editar-password")
-    public ResponseEntity<MensajeDTO<String>> cambiarPassword(@PathVariable CambiarPasswordModeradorDTO cambiarPasswordModeradorDTO)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> cambiarPassword(@RequestBody CambiarPasswordModeradorDTO cambiarPasswordModeradorDTO)throws Exception{
         moderadorServicio.actualizarPassword(cambiarPasswordModeradorDTO);
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Moderador actualizado correctamente") );
     }
 
     @PutMapping("/Aceptar/Negocio")
-    public ResponseEntity<MensajeDTO<String>> AceptarNegocio(@PathVariable RevisionesModeradorDTO revisionesModeradorDTO)throws
+    public ResponseEntity<MensajeDTO<String>> AceptarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.aceptarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio aceptado correctamente")
         );
     }
     @PutMapping("/Revisar/Negocio")
-    public ResponseEntity<MensajeDTO<String>> RevisarNegocio(@PathVariable RevisionesModeradorDTO revisionesModeradorDTO)throws
+    public ResponseEntity<MensajeDTO<String>> RevisarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.revisarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio revisado correctamente")
         );
     }
     @PutMapping("/Rechazar/Negocio")
-    public ResponseEntity<MensajeDTO<String>> RechazarNegocio(@PathVariable RevisionesModeradorDTO revisionesModeradorDTO)throws
+    public ResponseEntity<MensajeDTO<String>> RechazarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.rechazarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio rechazado correctamente")

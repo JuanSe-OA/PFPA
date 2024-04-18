@@ -43,6 +43,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             usuario.setPassword(registroClienteDTO.password());
             usuario.setFotoPerfil(registroClienteDTO.fotoPerfil());
             usuario.setEstadoCuenta(EstadoRegistro.ACTIVO);
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String passwordEncriptada = passwordEncoder.encode( registroClienteDTO.password() );
+            usuario.setPassword( passwordEncriptada );
             Usuario usuarioGuardado = usuariosRepo.save(usuario);
             String asunto = "Registro exitoso";
             String cuerpo = "Le damos la bienvenida a nuestra página web de map, esperamos puedas encontrar tus" +
@@ -50,9 +53,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             String correo = usuario.getEmail();
 
             emailServicio.enviarCorreo(new EmailDTO(asunto,cuerpo,correo));
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String passwordEncriptada = passwordEncoder.encode( registroClienteDTO.password() );
-            usuario.setPassword( passwordEncriptada );
+
             //Retornamos el id del cliente registrado
             return usuarioGuardado.getCodigo();
         }

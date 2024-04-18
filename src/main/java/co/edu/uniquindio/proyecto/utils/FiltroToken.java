@@ -72,6 +72,10 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
                     }
  //Si la petición es para la ruta /api/comentarios se verifica que el token sea correcto y que el rol sea CLIENTE
+                } else if (requestURI.startsWith("/api/auth")) {
+                    error=false;
+                }else if (requestURI.startsWith("/api/publico")) {
+                    error=false;
                 } else if (requestURI.startsWith("/api/comentarios")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
@@ -89,7 +93,7 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
                     }
 //Si la petición es para la ruta /api/imagenes se verifica que el token sea correcto y que el rol sea CLIENTE
-                }else if (requestURI.startsWith("/api/imagenes")) {
+                } else if (requestURI.startsWith("/api/imagenes")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
                         if (!jws.getPayload().get("rol").equals("CLIENTE")) {

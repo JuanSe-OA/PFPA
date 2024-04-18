@@ -20,8 +20,7 @@ import java.util.List;
 public class ComentarioControlador {
     private final ComentarioServicio  comentarioServicio;
     @PostMapping("/crear-comentario")
-    public ResponseEntity<MensajeDTO<String>> crearComentario(@Valid @RequestBody
-                                                                  CrearComentarioDTO crearComentarioDTO)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> crearComentario(@Valid @RequestBody CrearComentarioDTO crearComentarioDTO)throws Exception{
         comentarioServicio.crearComentario(crearComentarioDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Comentario creado correctamente")
         );
@@ -32,7 +31,7 @@ public class ComentarioControlador {
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Respuesta publicada correctamente") );
     }
     @GetMapping("/listar-comentarios-negocio")
-    public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(String codigo) throws Exception {
+    public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(@PathVariable String codigo) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, comentarioServicio.listarComentariosNegocio(codigo) )
         );
     }
