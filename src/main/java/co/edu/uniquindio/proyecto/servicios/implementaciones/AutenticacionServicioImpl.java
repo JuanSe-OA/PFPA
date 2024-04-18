@@ -34,7 +34,7 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Usuario usuario = usuarioOptional.get();
-        if( !passwordEncoder.matches(sesionDto.password(), usuario.getPassword()) ) {
+        if(!passwordEncoder.matches(sesionDto.password(), usuario.getPassword()) ) {
             throw new Exception("La contraseña es incorrecta");
         }
         Map<String, Object> map = new HashMap<>();
@@ -46,12 +46,15 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
 
     @Override
     public TokenDTO iniciarSesionModerador(SesionModeradorDTO sesionModeradorDTO) throws Exception {
-        Optional<Moderador> usuarioOptional = moderadorRepo.findByEmail(sesionModeradorDTO.email());
-        if (usuarioOptional.isEmpty()) {
+        Optional<Moderador> moderadorOptional = moderadorRepo.findByEmail(sesionModeradorDTO.email());
+        if (moderadorOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
         }
+        Moderador moderador = moderadorOptional.get();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        Moderador moderador = usuarioOptional.get();
+        String passwordEncriptada = passwordEncoder.encode( moderador.getPassword());
+        moderador.setPassword( passwordEncriptada );
+        moderadorRepo.save(moderador);
         if( !passwordEncoder.matches(sesionModeradorDTO.password(), moderador.getPassword()) ) {
             throw new Exception("La contraseña es incorrecta");
         }

@@ -13,7 +13,7 @@ public interface ComentariosRepo extends MongoRepository<Comentario,String> {
     Optional<Comentario> findById(String id);
 
     @Query("{'codigoNegocio': ?0}")
-    List<Comentario> findByNegocioId(String codigoNegocio);
+    List<Comentario> findBycodigoNegocio(String codigoNegocio);
 
     @Query(value = "{'codigoNegocio': ?0}", fields = "{'calificacion': 1}")
     List<Comentario> findCalificacionByCodigoNegocio(String codigoNegocio);

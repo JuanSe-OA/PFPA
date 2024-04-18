@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyecto.dto.moderadordtos.*;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.model.Entidades.Revision;
+import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRevision;
 
 import java.util.List;
@@ -17,6 +18,6 @@ public interface ModeradorServicio extends CuentaServicio {
 
     List<RevisarComentariosDTO> revisarComentarios(String codigo)throws Exception;
     void bloquearUsuario(String codigo)throws Exception;
-    List<ItemNegociosRevisionDTO>listarRevisiones(EstadoRevision estadoRevision)throws Exception;
+    List<ItemNegociosRevisionDTO>listarRevisiones(EstadoRegistro estadoRegistro)throws Exception;
     ItemNegociosRevisionDTO revisarNegocio(String codigo)throws Exception;
 }

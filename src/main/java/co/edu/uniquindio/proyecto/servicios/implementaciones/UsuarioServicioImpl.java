@@ -37,7 +37,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         }else {
             Usuario usuario = new Usuario();
             usuario.setNombre(registroClienteDTO.nombre());
-            usuario.setNombreUsuario(registroClienteDTO.nickname());
+            usuario.setNombreUsuario(registroClienteDTO.nombreUsuario());
             usuario.setCiudad(registroClienteDTO.ciudadResidencia());
             usuario.setEmail(registroClienteDTO.email());
             usuario.setPassword(registroClienteDTO.password());
@@ -83,11 +83,10 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new Exception("Usted no se encuentra registrado");
         }
         Usuario usuario = usuarioOptional.get();
-        usuario.setPassword(cambioPasswordDto.passwordNueva());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        usuario.setPassword(passwordEncoder.encode(cambioPasswordDto.passwordNueva()));
         usuariosRepo.save(usuario);
         emailServicio.enviarCorreo(new EmailDTO("Modificación de contraseña","Usted ha modificado su contraseña hoy a las" + hora, usuario.getEmail() ));
-
-
     }
 
     @Override
@@ -114,9 +113,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public List<ItemUsuarioDTO> listarClientes(String busqueda) throws Exception {
-        List<Usuario>usuarioList = usuariosRepo.findByNombreIsLike(busqueda);
-        List<ItemUsuarioDTO>itemUsuarioDTOList = new ArrayList<ItemUsuarioDTO>();
+    public List<ItemUsuarioDTO> listarClientes() throws Exception {
+        List<Usuario>usuarioList = usuariosRepo.findAll();
+        List<ItemUsuarioDTO>itemUsuarioDTOList = new ArrayList<>();
         for(Usuario usuario : usuarioList){
             itemUsuarioDTOList.add(new ItemUsuarioDTO(
                     usuario.getCodigo(), usuario.getNombreUsuario(),

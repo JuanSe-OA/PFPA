@@ -16,9 +16,13 @@ import co.edu.uniquindio.proyecto.repositorios.NegociosRepo;
 import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ModeradorServicio;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,8 +50,9 @@ public class ModeradorServicioImpl implements ModeradorServicio {
             throw new Exception("No fue posible encontrar su perfil en el sistema");
         }
         Moderador moderador = optionalModerador.get();
-        moderador.setPassword(cambiarPasswordModeradorDTO.passwordNueva());
-
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        moderador.setPassword(passwordEncoder.encode(cambiarPasswordModeradorDTO.passwordNueva()));
+        moderadorRepo.save(moderador);
     }
 
     @Override
@@ -65,6 +70,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
         revision.setFecha(revisionesModeradorDTO.fecha());
         negocio.getHistorialRevisiones().add(revision);
+        negociosRepo.save(negocio);
     }
 
     @Override
@@ -73,15 +79,17 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         if (optionalNegocio.isEmpty()) {
             throw new Exception("El negocio no se ecnuentra registrado");
         }
+
         Negocio negocio = optionalNegocio.get();
         Revision revision = new Revision();
         revision.setDescripcion(revisionesModeradorDTO.descripcion());
         revision.setCodigoModerador(revisionesModeradorDTO.codigoModerador());
         revision.setCodigoEntidad(revisionesModeradorDTO.codigoNegocio());
+        revision.setFecha(revisionesModeradorDTO.fecha());
         revision.setEstado(EstadoRevision.PENDIENTE);
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
-        revision.setFecha(revisionesModeradorDTO.fecha());
         negocio.getHistorialRevisiones().add(revision);
+        negociosRepo.save(negocio);
 
     }
 
@@ -100,6 +108,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setFecha(revisionesModeradorDTO.fecha());
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         negocio.getHistorialRevisiones().add(revision);
+        negociosRepo.save(negocio);
     }
 
     @Override
@@ -107,7 +116,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         if (codigo.isEmpty()) {
             throw new Exception("El negocio no se ecnuentra registrado");
         }
-        List<Comentario> comentarioList = comentariosRepo.findByNegocioId(codigo);
+        List<Comentario> comentarioList = comentariosRepo.findBycodigoNegocio(codigo);
         List<RevisarComentariosDTO> revisarComentariosDTOSList = new ArrayList<>();
         for (Comentario c : comentarioList) {
             Optional<Usuario> usuarioOptional = usuariosRepo.findById(c.getCodigoUsuario());
@@ -138,8 +147,8 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     }
 
     @Override
-    public List<ItemNegociosRevisionDTO> listarRevisiones(EstadoRevision estadoRevision) throws Exception {
-        List<Negocio>negocios = negociosRepo.findByEstadoRevision(estadoRevision);
+    public List<ItemNegociosRevisionDTO> listarRevisiones(EstadoRegistro estadoRegistro) throws Exception {
+        List<Negocio>negocios = negociosRepo.findByEstadoRegistro(estadoRegistro);
         List<ItemNegociosRevisionDTO> itemNegociosRevisionDTOSList = new ArrayList<>();
         for (Negocio negocio : negocios) {
             itemNegociosRevisionDTOSList.add(new ItemNegociosRevisionDTO(negocio.getNombre(), negocio.getDescripcion(),

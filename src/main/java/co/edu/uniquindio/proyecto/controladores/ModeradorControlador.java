@@ -27,7 +27,7 @@ public class ModeradorControlador {
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Moderador actualizado correctamente") );
     }
 
-    @PutMapping("/Aceptar/Negocio")
+    @PutMapping("/aceptar/Negocio")
     public ResponseEntity<MensajeDTO<String>> AceptarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.aceptarNegocio(revisionesModeradorDTO);
@@ -48,7 +48,7 @@ public class ModeradorControlador {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio rechazado correctamente")
         );
     }
-    @PutMapping("/Bloquear/{codigo}")
+    @PutMapping("/bloquear/{codigo}")
     public ResponseEntity<MensajeDTO<String>> BloquearUsuario(@PathVariable String codigo)throws
             Exception{
         moderadorServicio.bloquearUsuario(codigo);

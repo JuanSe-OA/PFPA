@@ -89,7 +89,7 @@ public class ClienteTest {
 
     @Test
     public void listarClientesTest()throws Exception{
-        List<ItemUsuarioDTO> itemUsuarioDTOList = usuarioServicio.listarClientes("Juan");
+        List<ItemUsuarioDTO> itemUsuarioDTOList = usuarioServicio.listarClientes();
         Assertions.assertNotNull(itemUsuarioDTOList);
     }
 }

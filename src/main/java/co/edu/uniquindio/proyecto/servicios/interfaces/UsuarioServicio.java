@@ -16,6 +16,6 @@ public interface UsuarioServicio extends CuentaServicio {
 
     void eliminarPerfil(String codigo) throws Exception;
 
-    List<ItemUsuarioDTO> listarClientes(String busqueda) throws Exception;
+    List<ItemUsuarioDTO> listarClientes() throws Exception;
 }
 

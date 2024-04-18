@@ -25,13 +25,13 @@ public class ComentarioControlador {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Comentario creado correctamente")
         );
     }
-    @PutMapping("/responder/{codigo}{respuesta}")
-    public ResponseEntity<MensajeDTO<String>> responderComentario(@PathVariable String codigo, @PathVariable String respuesta)throws Exception{
-        comentarioServicio.responderComentario(codigo,respuesta);
+    @PutMapping("/responder-comentario")
+    public ResponseEntity<MensajeDTO<String>> responderComentario(@RequestBody ResponderComentarioDTO responderComentarioDTO)throws Exception{
+        comentarioServicio.responderComentario(responderComentarioDTO);
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Respuesta publicada correctamente") );
     }
-    @GetMapping("/listar-comentarios-negocio/{codigo}")
-    public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(@PathVariable String codigo) throws Exception {
+    @GetMapping("/listar-comentarios/{codigo}")
+    public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(@PathVariable @Valid String codigo) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, comentarioServicio.listarComentariosNegocio(codigo) )
         );
     }
