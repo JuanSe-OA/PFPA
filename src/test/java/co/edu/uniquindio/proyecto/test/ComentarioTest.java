@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.test;
 
 import co.edu.uniquindio.proyecto.dto.comentariodtos.CrearComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.comentariodtos.ResponderComentarioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
 import co.edu.uniquindio.proyecto.servicios.implementaciones.ComentarioServicioImpl;
@@ -37,7 +38,7 @@ public class ComentarioTest {
         String mensajeRespuesta = "Gracias por preferirnos";
 
         // Llamada al método a probar
-        comentarioServicioImpl.responderComentario(codigoComentario, mensajeRespuesta);
+        comentarioServicioImpl.responderComentario(new ResponderComentarioDTO(codigoComentario,mensajeRespuesta));
 
         // Verificar que el comentario se haya guardado correctamente en la base de datos
         Optional<Comentario> comentarioGuardado = comentariosRepo.findById(codigoComentario);

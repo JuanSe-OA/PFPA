@@ -39,7 +39,7 @@ public class FiltroToken extends OncePerRequestFilter {
             boolean error = true;
             try {
 //Si la petición es para la ruta /api/clientes/registrar-cliente se verifica que el token sea correcto y que el rol sea USUARIO_NO_AUTENTICADO
-                if (requestURI.startsWith("/api/clientes")) {
+               if (requestURI.startsWith("/api/clientes")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
                         if (!jws.getPayload().get("rol").equals("CLIENTE")) {
@@ -56,7 +56,7 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
                     }
  //Si la petición es para la ruta /api/moderadores se verifica que el token sea correcto y que el rol sea MODERADOR
-                } else if(requestURI.startsWith("/api/moderadores")) {
+                }else if(requestURI.startsWith("/api/moderador")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
                         if (!jws.getPayload().get("rol").equals("MODERADOR")) {
@@ -72,7 +72,13 @@ public class FiltroToken extends OncePerRequestFilter {
                                 HttpServletResponse.SC_FORBIDDEN, response);
                     }
  //Si la petición es para la ruta /api/comentarios se verifica que el token sea correcto y que el rol sea CLIENTE
-                } else if (requestURI.startsWith("/api/comentarios")) {
+                } else if(requestURI.startsWith("/api/auth")) {
+                   error=false;
+                   //Si la petición es para la ruta /api/comentarios se verifica que el token sea correcto y que el rol sea CLIENTE
+               } else if(requestURI.startsWith("/api/publico")) {
+                   error=false;
+                   //Si la petición es para la ruta /api/comentarios se verifica que el token sea correcto y que el rol sea CLIENTE
+               }else if (requestURI.startsWith("/api/comentarios")) {
                     if (token != null) {
                         Jws<Claims> jws = jwtUtils.parseJwt(token);
                         if (!jws.getPayload().get("rol").equals("CLIENTE")) {

@@ -17,7 +17,7 @@ import java.util.List;
 public class NegociosControlador {
     private final NegocioServicio negocioServicio;
     @PostMapping("/crear-negocio")
-    public ResponseEntity<MensajeDTO<String>> crearNegocio(@Valid @RequestBody CrearNegocioDTO crearNegocioDTO)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> crearNegocio(@RequestBody CrearNegocioDTO crearNegocioDTO)throws Exception{
         negocioServicio.crearNegocio(crearNegocioDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,"Negocio creado correctamente"));
     }

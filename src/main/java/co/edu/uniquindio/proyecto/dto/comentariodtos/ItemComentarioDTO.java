@@ -11,8 +11,8 @@ public record ItemComentarioDTO(
         @NotBlank String nombreUsuario,
         @NotBlank String codigoComentario,
         @NotBlank String mensaje,
-        String respuesta,
+        @NotBlank String respuesta,
         @Range(min=1, max=5)
-        @NotBlank double calificacion,
-        @NotBlank LocalDate fecha) {
+        double calificacion,
+        LocalDate fecha) {
 }
