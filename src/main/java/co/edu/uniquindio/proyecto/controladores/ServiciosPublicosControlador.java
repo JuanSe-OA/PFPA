@@ -22,8 +22,8 @@ public class ServiciosPublicosControlador {
     private final ComentarioServicio comentarioServicio;
     private final NegocioServicio negocioServicio;
 
-    @GetMapping("/listar-comentarios-negocio")
-    public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(String codigo) throws Exception {
+    @GetMapping("/listar-comentarios-negocio/{codigo}")
+    public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(@PathVariable String codigo)throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, comentarioServicio.listarComentariosNegocio(codigo) )
         );
     }
