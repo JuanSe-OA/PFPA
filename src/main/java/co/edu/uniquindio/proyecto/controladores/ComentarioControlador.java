@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.controladores;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.dto.comentariodtos.CrearComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.comentariodtos.ResponderComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.ItemUsuarioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.RegistroClienteDto;
@@ -29,10 +30,5 @@ public class ComentarioControlador {
     public ResponseEntity<MensajeDTO<String>> responderComentario(@RequestBody ResponderComentarioDTO responderComentarioDTO)throws Exception{
         comentarioServicio.responderComentario(responderComentarioDTO);
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Respuesta publicada correctamente") );
-    }
-    @GetMapping("/listar-comentarios/{codigo}")
-    public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(@PathVariable @Valid String codigo) throws Exception {
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, comentarioServicio.listarComentariosNegocio(codigo) )
-        );
     }
 }

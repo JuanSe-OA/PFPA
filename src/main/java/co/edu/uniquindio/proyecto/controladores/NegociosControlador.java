@@ -31,21 +31,9 @@ public class NegociosControlador {
         negocioServicio.eliminarNegocio(codigoNegocio);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,"Negocio eliminado correctamente"));
     }
-    @GetMapping("/buscar-negocio-por-nombre/{busqueda}")
-    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> buscarNegociosPorNombre(@PathVariable String busqueda){
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, negocioServicio.buscarNegociosPorNombre(busqueda)));
-    }
-    @GetMapping("/obtener-detalle-negocio/{codigoNegocio}")
-    public ResponseEntity<MensajeDTO<DetalleNegocioDTO>> obtenerDetalleNegocio(@PathVariable String codigoNegocio) throws Exception{
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.obtenerDetalleNegocio(codigoNegocio)));
-    }
     @GetMapping("/obtener-detalle-negocio-propio/{codigoNegocio}")
     public ResponseEntity<MensajeDTO<DetalleNegocioPropioDTO>> obtenerDetalleNegocioPropio(@PathVariable String codigoNegocio) throws Exception{
         return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.obtenerDetalleNegocioPropio(codigoNegocio)));
-    }
-    @GetMapping("/obtener-informacion-negocio/{codigoNegocio}")
-    public ResponseEntity<MensajeDTO<ItemNegocioInfoDTO>> obtenerInformacionNegocio(@PathVariable String codigoNegocio) throws Exception{
-        return  ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.obtenerInformacionNegocio(codigoNegocio)));
     }
     @GetMapping("/listar-negocios-propietario/{codigoUsuario}")
     public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> listarNegociosPropietario(@PathVariable String codigoUsuario)throws Exception{
@@ -54,10 +42,6 @@ public class NegociosControlador {
     @GetMapping("/listar-negocios-favoritos/{codigoUsuario}")
     public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> listarNegociosFavoritos(@PathVariable String codigoUsuario)throws Exception{
         return  ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.listarNegociosFavoritos(codigoUsuario)));
-    }
-    @GetMapping("/buscar-negocios-por-distancia/{distancia}")
-    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> buscarNegociosDistancia(@RequestBody ObtenerDistanciaDTO obtenerDistanciaDTO) throws Exception{
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.buscarNegociosDistancia(obtenerDistanciaDTO)));
     }
     @PutMapping("/cambiar-estado/{codigoNegocio}{estadoRegistro}")
     public ResponseEntity<MensajeDTO<String>> cambiarEstado(@PathVariable String codigoNegocio, @PathVariable EstadoRegistro estadoRegistro) throws Exception{
