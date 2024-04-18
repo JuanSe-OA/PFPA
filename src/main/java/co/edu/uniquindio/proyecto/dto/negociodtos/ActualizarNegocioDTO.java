@@ -15,9 +15,9 @@ public record ActualizarNegocioDTO(
         @NotBlank String descripcion,
         @NotBlank @Length(max=50) String direccion,
         @NumberFormat(style = NumberFormat.Style.NUMBER)
-        @NotBlank Set<String> telefonos,
-        @NotBlank List<String> imagenes,
-        @NotBlank List<Horario> horarios,
-        @NotBlank Ubicacion ubicacion) {
+        Set<String> telefonos,
+        List<String> imagenes,
+        List<Horario> horarios,
+        Ubicacion ubicacion) {
 
 }

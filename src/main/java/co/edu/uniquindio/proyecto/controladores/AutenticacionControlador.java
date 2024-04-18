@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyecto.dto.TokenDTO;
 import co.edu.uniquindio.proyecto.dto.moderadordtos.SesionModeradorDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.RegistroClienteDto;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.SesionDto;
+import co.edu.uniquindio.proyecto.servicios.implementaciones.AutenticacionServicioImpl;
 import co.edu.uniquindio.proyecto.servicios.interfaces.AutenticacionServicio;
 import co.edu.uniquindio.proyecto.servicios.interfaces.UsuarioServicio;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AutenticacionControlador {
     private final UsuarioServicio usuarioServicio;
-    private final AutenticacionServicio autenticacionServicio;
+    private final AutenticacionServicioImpl autenticacionServicio;
     @PostMapping("/login-cliente")
     public ResponseEntity<MensajeDTO<TokenDTO>> iniciarSesionCliente(@Valid @RequestBody
                                                                      SesionDto loginDTO) throws Exception {

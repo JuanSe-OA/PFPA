@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
 import co.edu.uniquindio.proyecto.dto.comentariodtos.CrearComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.comentariodtos.ResponderComentarioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import co.edu.uniquindio.proyecto.model.Documents.Usuario;
@@ -46,28 +47,27 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     }
 
     @Override
-    public void responderComentario(String codigoComentario, String mensaje)throws Exception {
-        Optional<Comentario> optionalComentario = comentariosRepo.findById(codigoComentario);
+    public void responderComentario(ResponderComentarioDTO responderComentarioDTO)throws Exception {
+        Optional<Comentario> optionalComentario = comentariosRepo.findById(responderComentarioDTO.codigo());
 
         if(optionalComentario.isEmpty()){
             throw new Exception("El comentario no ha sido encontrado");
         }
 
         Comentario comentario= optionalComentario.get();
-        comentario.setRespuesta(mensaje);
+        comentario.setRespuesta(responderComentarioDTO.respuesta());
 
         comentariosRepo.save(comentario);
     }
 
     @Override
-    public List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio)throws Exception {
-        List<Comentario> comentariosNegocio = comentariosRepo.findByNegocioId(codigoNegocio);
-
+    public List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio) throws Exception {
+        List<Comentario> comentariosNegocio = comentariosRepo.findBycodigoNegocio(codigoNegocio);
         List<ItemComentarioDTO> itemsComentariosNegocio = new ArrayList<>();
         for(Comentario c: comentariosNegocio){
             Optional<Usuario> optionalUsuario = usuarioRepo.findById(c.getCodigoUsuario());
             if(optionalUsuario.isEmpty()){
-                throw new Exception("El usuario dueño de un comentario no ha sido encontrado");
+               throw  new Exception("El usuario no existe");
             }
             Usuario u = optionalUsuario.get();
             ItemComentarioDTO itemComentarioDTO = new ItemComentarioDTO(

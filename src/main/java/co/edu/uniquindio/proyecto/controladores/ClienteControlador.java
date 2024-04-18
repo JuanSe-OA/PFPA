@@ -17,13 +17,13 @@ import java.util.List;
 public class ClienteControlador {
     private final UsuarioServicio usuarioServicio;
     @PutMapping("/editar-perfil")
-    public ResponseEntity<MensajeDTO<String>> actualizarCliente(@Valid @RequestBody
+    public ResponseEntity<MensajeDTO<String>> actualizarCliente(@RequestBody
                                                                 ActualizarClienteDto actualizarClienteDTO)throws Exception{
         usuarioServicio.editarPerfil(actualizarClienteDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Cliente actualizado correctamente") );
     }
     @PutMapping("/editar-password")
-    public ResponseEntity<MensajeDTO<String>> cambiarPassword(@PathVariable CambioPasswordDto cambioPasswordDto)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> cambiarPassword(@RequestBody @Valid CambioPasswordDto cambioPasswordDto)throws Exception{
         usuarioServicio.actualizarPassword(cambioPasswordDto);
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Cliente actualizado correctamente") );
     }
@@ -43,8 +43,8 @@ public class ClienteControlador {
     }
 
     @GetMapping("/listar-todos")
-    public ResponseEntity<MensajeDTO<List<ItemUsuarioDTO>>> listarClientes(String busqueda) throws Exception {
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, usuarioServicio.listarClientes(busqueda) )
+    public ResponseEntity<MensajeDTO<List<ItemUsuarioDTO>>> listarClientes() throws Exception {
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, usuarioServicio.listarClientes() )
         );
     }
 }

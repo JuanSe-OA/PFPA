@@ -17,7 +17,7 @@ import java.util.List;
 public class NegociosControlador {
     private final NegocioServicio negocioServicio;
     @PostMapping("/crear-negocio")
-    public ResponseEntity<MensajeDTO<String>> crearNegocio(@Valid @RequestBody CrearNegocioDTO crearNegocioDTO)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> crearNegocio(@RequestBody CrearNegocioDTO crearNegocioDTO)throws Exception{
         negocioServicio.crearNegocio(crearNegocioDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,"Negocio creado correctamente"));
     }
@@ -56,8 +56,8 @@ public class NegociosControlador {
         return  ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.listarNegociosFavoritos(codigoUsuario)));
     }
     @GetMapping("/buscar-negocios-por-distancia/{distancia}")
-    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> buscarNegociosDistancia(@PathVariable double distancia){
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.buscarNegociosDistancia(distancia)));
+    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> buscarNegociosDistancia(@RequestBody ObtenerDistanciaDTO obtenerDistanciaDTO) throws Exception{
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.buscarNegociosDistancia(obtenerDistanciaDTO)));
     }
     @PutMapping("/cambiar-estado/{codigoNegocio}{estadoRegistro}")
     public ResponseEntity<MensajeDTO<String>> cambiarEstado(@PathVariable String codigoNegocio, @PathVariable EstadoRegistro estadoRegistro) throws Exception{

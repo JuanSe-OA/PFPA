@@ -227,27 +227,54 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public List<ItemListarNegociosDTO> buscarNegociosDistancia(double distancia) {
-        return List.of();
+    public void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro) throws Exception {
+
     }
 
     @Override
-    public void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro) throws Exception{
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(codigoNegocio);
+    public List<ItemListarNegociosDTO> buscarNegociosDistancia(ObtenerDistanciaDTO obtenerDistanciaDTO) {
+        List<Negocio> negocioList = negocioRepo.findAll();
+        List<ItemListarNegociosDTO> itemListarNegociosDTOS = new ArrayList<>();
+        for(Negocio n : negocioList){
+            double calificacion = comentarioServicio.calcularPromedioCalificaciones(n.getCodigo());
+            int numCalificaciones = comentarioServicio.calcularNumeroComentarios(n.getCodigo());
+            Horario dia= definirDia(n);
+            String estadoActual =definirEstadoActual(dia);
+            String horaCierre= definirHoraCierre(dia);
+            if(estaEnRango(n, obtenerDistanciaDTO.latitud(), obtenerDistanciaDTO.longitud(), obtenerDistanciaDTO.rango())){
+                itemListarNegociosDTOS.add(new ItemListarNegociosDTO(n.getCodigo(),
+                        n.getNombre(),calificacion,numCalificaciones,n.getTipoNegocio(),
+                        horaCierre,estadoActual,n.getDireccion(),n.getImagenes()));
+            }
+        } return  itemListarNegociosDTOS;
+    }
+    public boolean estaEnRango(Negocio n, double latitudUsuario, double longitudUsuario, double rango) {
+        // Convertir las coordenadas a radianes
+        double latitudUsuarioRad = Math.toRadians(latitudUsuario);
+        double longitudUsuarioRad = Math.toRadians(longitudUsuario);
+        double latitudNegocioRad = Math.toRadians(n.getUbicacion().getLatitud());
+        double longitudNegocioRad = Math.toRadians(n.getUbicacion().getLongitud());
 
-        if(optionalNegocio.isEmpty()){
-            throw new Exception("El negocio a modificar no se ha encontrado");
-        }
+        // Diferencia de coordenadas
+        double diferenciaLatitud = latitudNegocioRad - latitudUsuarioRad;
+        double diferenciaLongitud = longitudNegocioRad - longitudUsuarioRad;
 
-        Negocio negocio= optionalNegocio.get();
-        negocio.setEstadoRegistro(estadoRegistro);
-        negocioRepo.save(negocio);
+        // Aplicar la fórmula de Haversine
+        double a = Math.pow(Math.sin(diferenciaLatitud / 2), 2) +
+                Math.cos(latitudUsuarioRad) * Math.cos(latitudNegocioRad) *
+                        Math.pow(Math.sin(diferenciaLongitud / 2), 2);
+        double distancia = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // Radio de la Tierra en kilómetros
+        double radioTierra = 6371.0;
+
+        // Calcular la distancia
+        double distanciaFinal = radioTierra * distancia;
+
+        // Verificar si la distancia está dentro del rango dado
+        return distanciaFinal <= rango;
     }
 
-    @Override
-    public void registrarRevision() {
-
-    }
 
     public String definirEstadoActual(Horario dia){
         String estado="";
