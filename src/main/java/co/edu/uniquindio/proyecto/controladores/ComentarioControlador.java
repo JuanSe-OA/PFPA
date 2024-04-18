@@ -7,6 +7,7 @@ import co.edu.uniquindio.proyecto.dto.comentariodtos.ResponderComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.ItemUsuarioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.RegistroClienteDto;
+import co.edu.uniquindio.proyecto.servicios.implementaciones.ComentarioServicioImpl;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ComentarioServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/comentarios")
 public class ComentarioControlador {
-    private final ComentarioServicio  comentarioServicio;
+    private final ComentarioServicioImpl comentarioServicio;
     @PostMapping("/crear-comentario")
     public ResponseEntity<MensajeDTO<String>> crearComentario(@Valid @RequestBody
                                                                   CrearComentarioDTO crearComentarioDTO)throws Exception{

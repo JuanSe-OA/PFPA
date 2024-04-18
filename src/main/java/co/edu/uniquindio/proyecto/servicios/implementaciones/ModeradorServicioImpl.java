@@ -70,6 +70,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
         revision.setFecha(revisionesModeradorDTO.fecha());
         negocio.getHistorialRevisiones().add(revision);
+        negociosRepo.save(negocio);
     }
 
     @Override
@@ -88,6 +89,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setEstado(EstadoRevision.PENDIENTE);
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         negocio.getHistorialRevisiones().add(revision);
+        negociosRepo.save(negocio);
 
     }
 
@@ -106,6 +108,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setFecha(revisionesModeradorDTO.fecha());
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         negocio.getHistorialRevisiones().add(revision);
+        negociosRepo.save(negocio);
     }
 
     @Override

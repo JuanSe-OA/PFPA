@@ -61,11 +61,14 @@ public class ComentarioServicioImpl implements ComentarioServicio {
     }
 
     @Override
-    public List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio) {
+    public List<ItemComentarioDTO> listarComentariosNegocio(String codigoNegocio) throws Exception {
         List<Comentario> comentariosNegocio = comentariosRepo.findBycodigoNegocio(codigoNegocio);
         List<ItemComentarioDTO> itemsComentariosNegocio = new ArrayList<>();
         for(Comentario c: comentariosNegocio){
             Optional<Usuario> optionalUsuario = usuarioRepo.findById(c.getCodigoUsuario());
+            if(optionalUsuario.isEmpty()){
+               throw  new Exception("El usuario no existe");
+            }
             Usuario u = optionalUsuario.get();
             ItemComentarioDTO itemComentarioDTO = new ItemComentarioDTO(
                     u.getFotoPerfil(),

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,6 +17,5 @@ import java.time.LocalDate;
 public class Revision {
     private String descripcion,codigoModerador,codigoEntidad;
     private EstadoRevision estado;
-    private LocalDate fecha;
-
+    private LocalDateTime fecha;
 }
