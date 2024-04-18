@@ -30,7 +30,7 @@ public class ComentarioControlador {
         comentarioServicio.responderComentario(codigo,respuesta);
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Respuesta publicada correctamente") );
     }
-    @GetMapping("/listar-comentarios-negocio")
+    @GetMapping("/listar-comentarios-negocio/{codigo}")
     public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(@PathVariable String codigo) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, comentarioServicio.listarComentariosNegocio(codigo) )
         );

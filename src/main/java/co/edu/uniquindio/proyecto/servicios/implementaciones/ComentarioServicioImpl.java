@@ -66,7 +66,6 @@ public class ComentarioServicioImpl implements ComentarioServicio {
 
         List<ItemComentarioDTO> itemsComentariosNegocio = new ArrayList<>();
         for(Comentario c: comentariosNegocio){
-            System.out.println(c.getCodigoUsuario());
             Optional<Usuario> optionalUsuario = usuarioRepo.findById(c.getCodigoUsuario());
             if(optionalUsuario.isEmpty()){
                 throw new Exception("El usuario dueño de un comentario no ha sido encontrado");

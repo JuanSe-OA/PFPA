@@ -184,10 +184,13 @@ public class NegocioServicioImpl implements NegocioServicio {
         if(optionalUsuario.isEmpty()){
             throw new Exception("No se ha encontrado al usuario");
         }
-        List<Negocio> negociosPropietario= negocioRepo.findByCodigoUsuario(codigoUsuario);
+        Usuario u = optionalUsuario.get();
+        System.out.println(u.getCodigo());
+        List<Negocio> negociosPropietario= negocioRepo.findByCodigoUsuario(u.getCodigo());
 
         List<ItemListarNegociosDTO> detalleNegocioDTOS= new ArrayList<>();
         for(Negocio n : negociosPropietario){
+            System.out.println(n.getCodigo());
             double calificacion = comentarioServicio.calcularPromedioCalificaciones(n.getCodigo());
             int numCalificaciones = comentarioServicio.calcularNumeroComentarios(n.getCodigo());
             Horario dia= definirDia(n);
