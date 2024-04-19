@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -68,7 +69,8 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setCodigoEntidad(revisionesModeradorDTO.codigoNegocio());
         revision.setEstado(EstadoRevision.APROVADO);
         negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
-        revision.setFecha(revisionesModeradorDTO.fecha());
+        LocalDateTime fecha= LocalDateTime.now();
+        revision.setFecha(fecha);
         negocio.getHistorialRevisiones().add(revision);
         negociosRepo.save(negocio);
     }
@@ -85,7 +87,8 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setDescripcion(revisionesModeradorDTO.descripcion());
         revision.setCodigoModerador(revisionesModeradorDTO.codigoModerador());
         revision.setCodigoEntidad(revisionesModeradorDTO.codigoNegocio());
-        revision.setFecha(revisionesModeradorDTO.fecha());
+        LocalDateTime fecha = LocalDateTime.now();
+        revision.setFecha(fecha);
         revision.setEstado(EstadoRevision.PENDIENTE);
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         negocio.getHistorialRevisiones().add(revision);
@@ -105,7 +108,8 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setCodigoModerador(revisionesModeradorDTO.codigoModerador());
         revision.setCodigoEntidad(revisionesModeradorDTO.codigoNegocio());
         revision.setEstado(EstadoRevision.RECHAZADO);
-        revision.setFecha(revisionesModeradorDTO.fecha());
+        LocalDateTime fecha= LocalDateTime.now();
+        revision.setFecha(fecha);
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         negocio.getHistorialRevisiones().add(revision);
         negociosRepo.save(negocio);

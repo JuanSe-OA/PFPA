@@ -27,28 +27,28 @@ public class ModeradorControlador {
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Moderador actualizado correctamente") );
     }
 
-    @PutMapping("/aceptar/Negocio")
+    @PutMapping("/aceptar-negocio")
     public ResponseEntity<MensajeDTO<String>> AceptarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.aceptarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio aceptado correctamente")
         );
     }
-    @PutMapping("/Revisar/Negocio")
+    @PutMapping("/revisar-negocio")
     public ResponseEntity<MensajeDTO<String>> RevisarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.revisarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio revisado correctamente")
         );
     }
-    @PutMapping("/Rechazar/Negocio")
+    @PutMapping("/rechazar-negocio")
     public ResponseEntity<MensajeDTO<String>> RechazarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.rechazarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio rechazado correctamente")
         );
     }
-    @PutMapping("/bloquear/{codigo}")
+    @PutMapping("/bloquear-usuario/{codigo}")
     public ResponseEntity<MensajeDTO<String>> BloquearUsuario(@PathVariable String codigo)throws
             Exception{
         moderadorServicio.bloquearUsuario(codigo);

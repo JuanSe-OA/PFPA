@@ -135,7 +135,8 @@ public class NegocioTest {
 
     @Test
     public void cambiarEstadotest(){
-        Exception exception= Assertions.assertThrows(Exception.class, ()->{negocioServicio.cambiarEstado("Negocio87", EstadoRegistro.INACTIVO);});
+        CambiarEstadoNegocioDTO cambiarEstadoNegocioDTO = new CambiarEstadoNegocioDTO("Negocio87",EstadoRegistro.INACTIVO);
+        Exception exception= Assertions.assertThrows(Exception.class, ()->{negocioServicio.cambiarEstado(cambiarEstadoNegocioDTO);});
         Assertions.assertEquals("El negocio a modificar no se ha encontrado", exception.getMessage());
     }
 }

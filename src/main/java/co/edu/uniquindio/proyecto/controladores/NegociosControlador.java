@@ -43,9 +43,9 @@ public class NegociosControlador {
     public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> listarNegociosFavoritos(@PathVariable String codigoUsuario)throws Exception{
         return  ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.listarNegociosFavoritos(codigoUsuario)));
     }
-    @PutMapping("/cambiar-estado/{codigoNegocio}{estadoRegistro}")
-    public ResponseEntity<MensajeDTO<String>> cambiarEstado(@PathVariable String codigoNegocio, @PathVariable EstadoRegistro estadoRegistro) throws Exception{
-        negocioServicio.cambiarEstado(codigoNegocio,estadoRegistro);
+    @PutMapping("/cambiar-estado")
+    public ResponseEntity<MensajeDTO<String>> cambiarEstado(@RequestBody CambiarEstadoNegocioDTO cambiarEstadoNegocioDTO) throws Exception{
+        negocioServicio.cambiarEstado(cambiarEstadoNegocioDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,"Estado de Negocio cambiado correctamente"));
     }
 }

@@ -45,4 +45,9 @@ public class ClienteControlador {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, usuarioServicio.listarClientes() )
         );
     }
+    @PostMapping("/agregar-favorito")
+    public ResponseEntity<MensajeDTO<String>> agregarFavorito(@RequestBody AgregarNegocioFavoritoDTO agregarNegocioFavoritoDTO)throws  Exception{
+        usuarioServicio.agregarNegocioFavoritos(agregarNegocioFavoritoDTO);
+        return  ResponseEntity.ok().body(new MensajeDTO<>(false, "negocio agregado correctamente a favoritos"));
+    }
 }

@@ -1,6 +1,8 @@
 package co.edu.uniquindio.proyecto.test;
 
 import co.edu.uniquindio.proyecto.dto.comentariodtos.CrearComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.comentariodtos.ResponderComentarioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
 import co.edu.uniquindio.proyecto.servicios.implementaciones.ComentarioServicioImpl;

@@ -23,13 +23,11 @@ import java.util.Optional;
 public class NegocioServicioImpl implements NegocioServicio {
     private final NegociosRepo negocioRepo;
     private final ComentarioServicioImpl comentarioServicio;
-    private final UsuarioServicioImpl usuarioServicio;
     private final UsuariosRepo usuariosRepo;
 
-    public NegocioServicioImpl(NegociosRepo negocioRepo, ComentarioServicioImpl comentarioServicio, UsuarioServicioImpl usuarioServicio, UsuariosRepo usuariosRepo) {
+    public NegocioServicioImpl(NegociosRepo negocioRepo, ComentarioServicioImpl comentarioServicio, UsuariosRepo usuariosRepo) {
         this.negocioRepo = negocioRepo;
         this.comentarioServicio = comentarioServicio;
-        this.usuarioServicio = usuarioServicio;
         this.usuariosRepo = usuariosRepo;
     }
 
@@ -217,7 +215,7 @@ public class NegocioServicioImpl implements NegocioServicio {
             throw new Exception("No se ha encontrado al usuario");
         }
         List<ItemListarNegociosDTO> negociosFavoritosDTOs= new ArrayList<>();
-        List<String> favoritos= usuarioServicio.listarNegociosFavoritos(codigoUsuario);
+        List<String> favoritos= usuariosRepo.findFavoritosByCodigoUsuario(codigoUsuario);
         for(String codigo: favoritos){
             Optional<Negocio> optionalNegocio = negocioRepo.findById(codigo);
             if(optionalNegocio.isEmpty()){
@@ -244,15 +242,15 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro) throws Exception{
-        Optional<Negocio> optionalNegocio = negocioRepo.findById(codigoNegocio);
+    public void cambiarEstado(CambiarEstadoNegocioDTO cambiarEstadoNegocioDTO) throws Exception{
+        Optional<Negocio> optionalNegocio = negocioRepo.findById(cambiarEstadoNegocioDTO.codigoNegocio());
 
         if(optionalNegocio.isEmpty()){
             throw new Exception("El negocio a modificar no se ha encontrado");
         }
 
         Negocio negocio= optionalNegocio.get();
-        negocio.setEstadoRegistro(estadoRegistro);
+        negocio.setEstadoRegistro(cambiarEstadoNegocioDTO.estadoRegistro());
         negocioRepo.save(negocio);
     }
 

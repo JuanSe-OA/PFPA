@@ -13,9 +13,6 @@ import java.util.List;
 public record RevisionesModeradorDTO(
         @NotBlank String codigoNegocio,
         @NotBlank String descripcion,
-        @NotBlank String codigoModerador,
-        LocalDateTime fecha
-
-
+        @NotBlank String codigoModerador
         ) {
 }

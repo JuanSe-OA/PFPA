@@ -1,10 +1,11 @@
 package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
 import co.edu.uniquindio.proyecto.dto.EmailDTO;
-import co.edu.uniquindio.proyecto.dto.negociodtos.DetalleNegocioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.*;
+import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
+import co.edu.uniquindio.proyecto.repositorios.NegociosRepo;
 import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.proyecto.servicios.interfaces.UsuarioServicio;
@@ -22,12 +23,14 @@ import java.util.Optional;
 public class UsuarioServicioImpl implements UsuarioServicio {
     private final UsuariosRepo usuariosRepo;
     private final EmailServicio emailServicio;
+    private final NegociosRepo negociosRepo;
     LocalTime hora = LocalTime.now();
 
 
-    public UsuarioServicioImpl(UsuariosRepo usuariosRepo, EmailServicio emailServicio){
+    public UsuarioServicioImpl(UsuariosRepo usuariosRepo, EmailServicio emailServicio, NegociosRepo negociosRepo){
         this.usuariosRepo= usuariosRepo;
         this.emailServicio = emailServicio;
+        this.negociosRepo = negociosRepo;
     }
     @Override
     public String registrarse(RegistroClienteDto registroClienteDTO) throws Exception {
@@ -125,12 +128,22 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         return itemUsuarioDTOList;
     }
 
+    @Override
+    public void agregarNegocioFavoritos(AgregarNegocioFavoritoDTO agregarNegocioFavoritoDTO) throws Exception {
+        Optional<Negocio> optionalNegocio = negociosRepo.findById(agregarNegocioFavoritoDTO.codigoNegocio());
+        if(optionalNegocio.isEmpty()){
+            throw new Exception("El negocio no ha sido encontrado");
+        }
+        Optional<Usuario> optionalUsuario = usuariosRepo.findById(agregarNegocioFavoritoDTO.codigoUsuario());
+        if(optionalUsuario.isEmpty()){
+            throw new Exception("El usuario no ha sido encontrado");
+        }
+        Usuario usuario = optionalUsuario.get();
+        usuario.getFavoritos().add(agregarNegocioFavoritoDTO.codigoNegocio());
+    }
+
     private boolean existeEmail(String email) {
         return usuariosRepo.findByEmail(email).isPresent();
     }
 
-    public List<String> listarNegociosFavoritos(String codigoUsuario){
-        List<String> codigoNegociosFavoritos= usuariosRepo.findFavoritos();
-        return codigoNegociosFavoritos;
-    }
 }

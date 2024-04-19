@@ -15,6 +15,6 @@ public interface UsuariosRepo extends MongoRepository<Usuario,String> {
     Optional<Usuario>findByEmail(String email);
     Optional<Usuario>findById(String id);
     List<Usuario> findByNombreIsLike(String nombre);
-    @Query(value = "{}", fields = "{'favoritos' :  1}")
-    List<String> findFavoritos();
+    @Query(value = "{'codigoUsuario': ?0}", fields = "{'favoritos' :  1}")
+    List<String> findFavoritosByCodigoUsuario(String codigoUsuario);
 }
