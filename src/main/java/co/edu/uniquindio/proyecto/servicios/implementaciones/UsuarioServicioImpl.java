@@ -46,6 +46,8 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             usuario.setPassword(registroClienteDTO.password());
             usuario.setFotoPerfil(registroClienteDTO.fotoPerfil());
             usuario.setEstadoCuenta(EstadoRegistro.ACTIVO);
+            List<String> favoritos= new ArrayList<>();
+            usuario.setFavoritos(favoritos);
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String passwordEncriptada = passwordEncoder.encode( registroClienteDTO.password() );
             usuario.setPassword( passwordEncriptada );
@@ -113,6 +115,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         }
         Usuario usuario = usuarioOptional.get();
         usuario.setEstadoCuenta(EstadoRegistro.INACTIVO);
+        usuariosRepo.save(usuario);
     }
 
     @Override
@@ -140,6 +143,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
         }
         Usuario usuario = optionalUsuario.get();
         usuario.getFavoritos().add(agregarNegocioFavoritoDTO.codigoNegocio());
+        usuariosRepo.save(usuario);
     }
 
     private boolean existeEmail(String email) {

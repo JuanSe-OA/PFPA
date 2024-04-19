@@ -42,7 +42,7 @@ public class ClienteTest {
                 "Juan Jaime",
                 "URL",
                 "Jaimesito Juan",
-                "juanma235235@gmail.com",
+                "juanma@gmail.com",
                 "contraseñarandom400982",
                 "Armenia");
         String codigoUsuario = usuarioServicio.registrarse(registroClienteDto);

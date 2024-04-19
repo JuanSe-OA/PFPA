@@ -144,6 +144,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         }
         Usuario usuario = usuarioOptional.get();
         usuario.setEstadoCuenta(EstadoRegistro.INACTIVO);
+        usuariosRepo.save(usuario);
         String asunto = "Bloqueo de cuenta";
         String cuerpo = "Usted ha incumplido con las normas de la página";
         String correo = usuario.getEmail();

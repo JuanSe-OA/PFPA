@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyecto.dto.negociodtos.*;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
 import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.model.Entidades.Horario;
+import co.edu.uniquindio.proyecto.model.Entidades.Revision;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
 import co.edu.uniquindio.proyecto.repositorios.NegociosRepo;
@@ -49,7 +50,8 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocio.setHorarios(crearNegocioDTO.horarios());
         negocio.setImagenes(crearNegocioDTO.imagenes());
         negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
-
+        List<Revision> historialRevisiones = new ArrayList<>();
+        negocio.setHistorialRevisiones(historialRevisiones);
         Negocio negocioGuardado=negocioRepo.save(negocio);
 
         return negocioGuardado.getCodigo();
