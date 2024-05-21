@@ -27,13 +27,20 @@ public class ImagenesServicioImpl implements ImagenesServicio {
         return cloudinary.uploader().upload(file, ObjectUtils.asMap("folder", "Unilocal"));    }
 
     @Override
-    public Map eliminarImagen(String idImagen) throws Exception {
-        return cloudinary.uploader().destroy(idImagen, ObjectUtils.emptyMap());    }
+    public Map eliminarImagen(String urlImagen) throws Exception {
+        String publicId = extraerPublicIdDeUrl(urlImagen);
+        return cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+    }
     private File convertir(MultipartFile imagen) throws IOException {
         File file = File.createTempFile(imagen.getOriginalFilename(), null);
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(imagen.getBytes());
         fos.close();
         return file;
+    }
+
+    private String extraerPublicIdDeUrl(String urlImagen) {
+        int indexUpload = urlImagen.indexOf("/upload/") + "/upload/".length();
+        return urlImagen.substring(indexUpload);
     }
 }

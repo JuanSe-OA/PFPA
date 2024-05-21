@@ -23,7 +23,7 @@ public class ImagenesControlador {
     @DeleteMapping("/eliminar")
     public ResponseEntity<MensajeDTO<Map>> eliminar(@RequestBody ImagenDTO imagenDTO) throws
             Exception{
-        Map respuesta = imagenesServicio.eliminarImagen( imagenDTO.id() );
+        Map respuesta = imagenesServicio.eliminarImagen( imagenDTO.URL() );
         return ResponseEntity.ok().body(new MensajeDTO<>(false, respuesta ));
     }
 }

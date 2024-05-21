@@ -28,4 +28,5 @@ public interface NegocioServicio {
     List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario)throws Exception;
 
     void cambiarEstado(CambiarEstadoNegocioDTO cambiarEstadoNegocioDTO)throws Exception;
+    ObtenerNegocioDTO obtenerNegocio(String codigoNegocio) throws  Exception;
 }

@@ -48,4 +48,9 @@ public class NegociosControlador {
         negocioServicio.cambiarEstado(cambiarEstadoNegocioDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,"Estado de Negocio cambiado correctamente"));
     }
+
+    @GetMapping("/obetener-negocio/{codigoNegocio}")
+    public ResponseEntity<MensajeDTO<ObtenerNegocioDTO>> obtenerNegocio(@PathVariable String codigoNegocio) throws Exception{
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.obtenerNegocio(codigoNegocio)));
+    }
 }

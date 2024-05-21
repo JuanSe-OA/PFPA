@@ -257,6 +257,27 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
+    public ObtenerNegocioDTO obtenerNegocio(String codigoNegocio) throws Exception {
+        Optional<Negocio> optionalNegocio = negocioRepo.findById(codigoNegocio);
+        if(optionalNegocio.isEmpty()){
+            throw  new Exception("El negocio no fue encontrado");
+        }
+        Negocio n = optionalNegocio.get();
+        ObtenerNegocioDTO obtenerNegocioDTO= new ObtenerNegocioDTO(
+                n.getCodigo(),
+                n.getNombre(),
+                n.getDescripcion(),
+                n.getDireccion(),
+                n.getTipoNegocio(),
+                n.getUbicacion(),
+                n.getTelefonos(),
+                n.getHorarios(),
+                n.getImagenes()
+        );
+        return null;
+    }
+
+    @Override
     public List<ItemListarNegociosDTO> buscarNegociosDistancia(ObtenerDistanciaDTO obtenerDistanciaDTO) {
         List<Negocio> negocioList = negocioRepo.findAll();
         List<ItemListarNegociosDTO> itemListarNegociosDTOS = new ArrayList<>();
