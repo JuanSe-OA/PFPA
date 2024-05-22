@@ -3,6 +3,8 @@ package co.edu.uniquindio.proyecto.dto.negociodtos;
 import co.edu.uniquindio.proyecto.model.Entidades.Horario;
 import co.edu.uniquindio.proyecto.model.Enum.Ubicacion;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -15,9 +17,9 @@ public record ActualizarNegocioDTO(
         @NotBlank String descripcion,
         @NotBlank @Length(max=50) String direccion,
         @NumberFormat(style = NumberFormat.Style.NUMBER)
-        @NotBlank Set<String> telefonos,
-        @NotBlank List<String> imagenes,
-        @NotBlank List<Horario> horarios,
-        @NotBlank Ubicacion ubicacion) {
+        @NotEmpty Set<String> telefonos,
+        @NotEmpty List<String> imagenes,
+        @NotEmpty List<Horario> horarios,
+        @NotNull Ubicacion ubicacion) {
 
 }

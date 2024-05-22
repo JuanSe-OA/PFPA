@@ -108,7 +108,8 @@ public class NegocioServicioImpl implements NegocioServicio {
                     horaCierre,
                     estadoActual,
                     n.getDireccion(),
-                    n.getImagenes()));
+                    n.getImagenes(),
+                    n.getUbicacion()));
         }
         return detalleNegociosEncontraadosDTOS;
     }
@@ -205,7 +206,8 @@ public class NegocioServicioImpl implements NegocioServicio {
                     horaCierre,
                     estadoActual,
                     n.getDireccion(),
-                    n.getImagenes()));
+                    n.getImagenes(),
+                    n.getUbicacion()));
         }
         return detalleNegocioDTOS;
     }
@@ -238,7 +240,8 @@ public class NegocioServicioImpl implements NegocioServicio {
                     horaCierre,
                     estadoActual,
                     n.getDireccion(),
-                    n.getImagenes()));
+                    n.getImagenes(),
+                    n.getUbicacion()));
         }
         return negociosFavoritosDTOs;
     }
@@ -274,7 +277,7 @@ public class NegocioServicioImpl implements NegocioServicio {
                 n.getHorarios(),
                 n.getImagenes()
         );
-        return null;
+        return obtenerNegocioDTO;
     }
 
     @Override
@@ -290,7 +293,7 @@ public class NegocioServicioImpl implements NegocioServicio {
             if(estaEnRango(n, obtenerDistanciaDTO.latitud(), obtenerDistanciaDTO.longitud(), obtenerDistanciaDTO.rango())){
                 itemListarNegociosDTOS.add(new ItemListarNegociosDTO(n.getCodigo(),
                         n.getNombre(),calificacion,numCalificaciones,n.getTipoNegocio(),
-                        horaCierre,estadoActual,n.getDireccion(),n.getImagenes()));
+                        horaCierre,estadoActual,n.getDireccion(),n.getImagenes(), n.getUbicacion()));
             }
         } return  itemListarNegociosDTOS;
     }
