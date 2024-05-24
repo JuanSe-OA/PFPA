@@ -23,6 +23,7 @@ public class ServiciosPublicosControlador {
     private final NegocioServicio negocioServicio;
 
     @GetMapping("/listar-comentarios-negocio/{codigo}")
+
     public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(@PathVariable String codigo) throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, comentarioServicio.listarComentariosNegocio(codigo) )
         );

@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.repositorios;
 
 import co.edu.uniquindio.proyecto.dto.negociodtos.DetalleNegocioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
+import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRevision;
 import org.springframework.data.mongodb.core.aggregation.ComparisonOperators;
@@ -24,6 +25,7 @@ public interface NegociosRepo extends MongoRepository <Negocio,String> {
     List<Negocio> findByCodigoUsuario(String codigoUsuario);
 
     List<Negocio> findByNombreIsLike(String nombre);
+  
     @Query("{'historialRevisiones.estado': ?0}")
     List<Negocio> findByEstadoRevision(EstadoRevision estadoRevision);
 

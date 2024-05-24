@@ -28,6 +28,9 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
     private final JWUtils jwtUtils;
     @Override
     public TokenDTO iniciarSesionUsuario(SesionDto sesionDto) throws Exception {
+        if(sesionDto.email().isEmpty()||sesionDto.password().isEmpty()){
+            throw new Exception("El email y la contraseña no pueden estar vacíos");
+        }
         Optional<Usuario> usuarioOptional = usuariosRepo.findByEmail(sesionDto.email());
         if (usuarioOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
@@ -46,6 +49,9 @@ public class AutenticacionServicioImpl implements AutenticacionServicio {
 
     @Override
     public TokenDTO iniciarSesionModerador(SesionModeradorDTO sesionModeradorDTO) throws Exception {
+        if(sesionModeradorDTO.email().isEmpty() || sesionModeradorDTO.password().isEmpty()) {
+            throw new Exception("El email y la contraseña no pueden estar vacíos");
+        }
         Optional<Moderador> moderadorOptional = moderadorRepo.findByEmail(sesionModeradorDTO.email());
         if (moderadorOptional.isEmpty()) {
             throw new Exception("El correo no se encuentra registrado");
