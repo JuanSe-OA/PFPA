@@ -16,7 +16,7 @@ public interface ComentariosRepo extends MongoRepository<Comentario,String> {
     List<Comentario> findBycodigoNegocio(String codigoNegocio);
 
     @Query(value = "{'codigoNegocio': ?0}", fields = "{'calificacion': 1}")
-    List<Double> findCalificacionByCodigoNegocio(String codigoNegocio);
+    List<Comentario> findCalificacionByCodigoNegocio(String codigoNegocio);
 
     //int contarNumeroComentariosNegocio(String codigoNegocio);
     @Query("{'codigoUsuario': ?0}")

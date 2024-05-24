@@ -20,6 +20,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -158,12 +159,13 @@ public class ComentarioServicioImpl implements ComentarioServicio {
 
     @Override
     public double calcularPromedioCalificaciones(String codigoNegocio) {
-        List<Double> calificacionesNegocio = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
+        List<Comentario> comentarios = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
+        List<Double> calificacionesNegocio= comentarios.stream().map(Comentario::getCalificacion).collect(Collectors.toList());
         return calificacionesNegocio.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
     }
 
     public int calcularNumeroComentarios(String codigoNegocio){
-        List<Double> calificacionesNegocio = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
+        List<Comentario> calificacionesNegocio = comentariosRepo.findCalificacionByCodigoNegocio(codigoNegocio);
         return calificacionesNegocio.size();
     }
 }

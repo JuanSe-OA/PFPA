@@ -17,8 +17,7 @@ import java.util.List;
 public class ClienteControlador {
     private final UsuarioServicio usuarioServicio;
     @PutMapping("/editar-perfil")
-    public ResponseEntity<MensajeDTO<String>> actualizarCliente(@RequestBody
-                                                                ActualizarClienteDto actualizarClienteDTO)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> actualizarCliente(@Valid @RequestBody ActualizarClienteDto actualizarClienteDTO)throws Exception{
         usuarioServicio.editarPerfil(actualizarClienteDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Cliente actualizado correctamente") );
     }
@@ -36,8 +35,7 @@ public class ClienteControlador {
         );
     }
     @GetMapping("/obtener/{codigo}")
-    public ResponseEntity<MensajeDTO<MostrarPerfilDTO>> obtenerCliente(@PathVariable String
-                                                                                codigo) throws Exception{
+    public ResponseEntity<MensajeDTO<MostrarPerfilDTO>> obtenerCliente(@PathVariable String codigo) throws Exception{
         return ResponseEntity.ok().body( new MensajeDTO<>(false,
                 usuarioServicio.mostrarPerfil(codigo) ) );
     }
@@ -46,5 +44,10 @@ public class ClienteControlador {
     public ResponseEntity<MensajeDTO<List<ItemUsuarioDTO>>> listarClientes() throws Exception {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, usuarioServicio.listarClientes() )
         );
+    }
+    @PostMapping("/agregar-favorito")
+    public ResponseEntity<MensajeDTO<String>> agregarFavorito(@RequestBody AgregarNegocioFavoritoDTO agregarNegocioFavoritoDTO)throws  Exception{
+        usuarioServicio.agregarNegocioFavoritos(agregarNegocioFavoritoDTO);
+        return  ResponseEntity.ok().body(new MensajeDTO<>(false, "negocio agregado correctamente a favoritos"));
     }
 }

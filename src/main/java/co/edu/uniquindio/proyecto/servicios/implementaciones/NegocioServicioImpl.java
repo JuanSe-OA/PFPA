@@ -2,10 +2,13 @@ package co.edu.uniquindio.proyecto.servicios.implementaciones;
 
 import co.edu.uniquindio.proyecto.dto.negociodtos.*;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
+import co.edu.uniquindio.proyecto.model.Documents.Usuario;
 import co.edu.uniquindio.proyecto.model.Entidades.Horario;
+import co.edu.uniquindio.proyecto.model.Entidades.Revision;
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
 import co.edu.uniquindio.proyecto.repositorios.NegociosRepo;
+import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.NegocioServicio;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,16 +24,17 @@ import java.util.Optional;
 public class NegocioServicioImpl implements NegocioServicio {
     private final NegociosRepo negocioRepo;
     private final ComentarioServicioImpl comentarioServicio;
-    private final UsuarioServicioImpl usuarioServicio;
+    private final UsuariosRepo usuariosRepo;
 
-    public NegocioServicioImpl(NegociosRepo negocioRepo, ComentarioServicioImpl comentarioServicio, UsuarioServicioImpl usuarioServicio) {
+    public NegocioServicioImpl(NegociosRepo negocioRepo, ComentarioServicioImpl comentarioServicio, UsuariosRepo usuariosRepo) {
         this.negocioRepo = negocioRepo;
         this.comentarioServicio = comentarioServicio;
-        this.usuarioServicio = usuarioServicio;
+        this.usuariosRepo = usuariosRepo;
     }
 
     @Override
     public String crearNegocio(CrearNegocioDTO crearNegocioDTO) throws Exception {
+
         Optional<Negocio> negocioExistente = negocioRepo.findByNombre(crearNegocioDTO.nombre());
         if (negocioExistente.isPresent()) {
             throw new IllegalArgumentException("Ya existe un negocio con ese nombre");
@@ -52,6 +56,9 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocio.setHorarios(crearNegocioDTO.horarios());
         negocio.setImagenes(crearNegocioDTO.imagenes());
         negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
+        List<Revision> historialRevisiones = new ArrayList<>();
+        negocio.setHistorialRevisiones(historialRevisiones);
+
         Negocio negocioGuardado=negocioRepo.save(negocio);
 
         return negocioGuardado.getCodigo();
@@ -64,6 +71,7 @@ public class NegocioServicioImpl implements NegocioServicio {
         if(optionalNegocio.isEmpty()){
             throw new Exception("El negocio a modificar no ha sido encontrado");
         }
+
         if(actualizarNegocioDTO.nombre().isEmpty()||actualizarNegocioDTO.nombre().isEmpty()||actualizarNegocioDTO.descripcion().isEmpty()||
                 actualizarNegocioDTO.direccion().isEmpty()||actualizarNegocioDTO.telefonos().isEmpty()||actualizarNegocioDTO.horarios().isEmpty()||
                 actualizarNegocioDTO.horarios().isEmpty()||actualizarNegocioDTO.imagenes().isEmpty()||actualizarNegocioDTO.ubicacion()==null
@@ -120,7 +128,8 @@ public class NegocioServicioImpl implements NegocioServicio {
                     horaCierre,
                     estadoActual,
                     n.getDireccion(),
-                    n.getImagenes()));
+                    n.getImagenes(),
+                    n.getUbicacion()));
         }
         return detalleNegociosEncontraadosDTOS;
     }
@@ -195,8 +204,14 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     @Override
-    public List<ItemListarNegociosDTO> listarNegociosPropietario(String codigoUsuario) {
-        List<Negocio> negociosPropietario= negocioRepo.findByCodigoUsuario(codigoUsuario);
+    public List<ItemListarNegociosDTO> listarNegociosPropietario(String codigoUsuario)throws Exception {
+        Optional<Usuario> optionalUsuario = usuariosRepo.findById(codigoUsuario);
+        if(optionalUsuario.isEmpty()){
+            throw new Exception("No se ha encontrado al usuario");
+        }
+        Usuario u = optionalUsuario.get();
+        System.out.println(u.getCodigo());
+        List<Negocio> negociosPropietario= negocioRepo.findByCodigoUsuario(u.getCodigo());
 
         List<ItemListarNegociosDTO> detalleNegocioDTOS= new ArrayList<>();
         for(Negocio n : negociosPropietario){
@@ -214,15 +229,20 @@ public class NegocioServicioImpl implements NegocioServicio {
                     horaCierre,
                     estadoActual,
                     n.getDireccion(),
-                    n.getImagenes()));
+                    n.getImagenes(),
+                    n.getUbicacion()));
         }
         return detalleNegocioDTOS;
     }
 
     @Override
     public List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario)throws Exception {
+        Optional<Usuario> optionalUsuario = usuariosRepo.findById(codigoUsuario);
+        if(optionalUsuario.isEmpty()){
+            throw new Exception("No se ha encontrado al usuario");
+        }
         List<ItemListarNegociosDTO> negociosFavoritosDTOs= new ArrayList<>();
-        List<String> favoritos= usuarioServicio.listarNegociosFavoritos(codigoUsuario);
+        List<String> favoritos= usuariosRepo.findFavoritosByCodigoUsuario(codigoUsuario);
         for(String codigo: favoritos){
             Optional<Negocio> optionalNegocio = negocioRepo.findById(codigo);
             if(optionalNegocio.isEmpty()){
@@ -243,14 +263,44 @@ public class NegocioServicioImpl implements NegocioServicio {
                     horaCierre,
                     estadoActual,
                     n.getDireccion(),
-                    n.getImagenes()));
+                    n.getImagenes(),
+                    n.getUbicacion()));
         }
         return negociosFavoritosDTOs;
     }
 
     @Override
-    public void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro) throws Exception {
+    public void cambiarEstado(CambiarEstadoNegocioDTO cambiarEstadoNegocioDTO) throws Exception{
+        Optional<Negocio> optionalNegocio = negocioRepo.findById(cambiarEstadoNegocioDTO.codigoNegocio());
 
+        if(optionalNegocio.isEmpty()){
+            throw new Exception("El negocio a modificar no se ha encontrado");
+        }
+
+        Negocio negocio= optionalNegocio.get();
+        negocio.setEstadoRegistro(cambiarEstadoNegocioDTO.estadoRegistro());
+        negocioRepo.save(negocio);
+    }
+
+    @Override
+    public ObtenerNegocioDTO obtenerNegocio(String codigoNegocio) throws Exception {
+        Optional<Negocio> optionalNegocio = negocioRepo.findById(codigoNegocio);
+        if(optionalNegocio.isEmpty()){
+            throw  new Exception("El negocio no fue encontrado");
+        }
+        Negocio n = optionalNegocio.get();
+        ObtenerNegocioDTO obtenerNegocioDTO= new ObtenerNegocioDTO(
+                n.getCodigo(),
+                n.getNombre(),
+                n.getDescripcion(),
+                n.getDireccion(),
+                n.getTipoNegocio(),
+                n.getUbicacion(),
+                n.getTelefonos(),
+                n.getHorarios(),
+                n.getImagenes()
+        );
+        return obtenerNegocioDTO;
     }
 
     @Override
@@ -266,7 +316,7 @@ public class NegocioServicioImpl implements NegocioServicio {
             if(estaEnRango(n, obtenerDistanciaDTO.latitud(), obtenerDistanciaDTO.longitud(), obtenerDistanciaDTO.rango())){
                 itemListarNegociosDTOS.add(new ItemListarNegociosDTO(n.getCodigo(),
                         n.getNombre(),calificacion,numCalificaciones,n.getTipoNegocio(),
-                        horaCierre,estadoActual,n.getDireccion(),n.getImagenes()));
+                        horaCierre,estadoActual,n.getDireccion(),n.getImagenes(), n.getUbicacion()));
             }
         } return  itemListarNegociosDTOS;
     }
@@ -301,7 +351,10 @@ public class NegocioServicioImpl implements NegocioServicio {
     public String definirEstadoActual(Horario dia){
         String estado="";
         LocalTime hora= LocalTime.now();
-        if(hora.isAfter(dia.getHoraFin()) || hora.isBefore(dia.getHoraInicio()) ){
+        if(dia ==null){
+            estado="Cerrado";
+        }
+        else if(hora.isAfter(dia.getHoraFin()) || hora.isBefore(dia.getHoraInicio()) ){
             estado = "Cerrado";
         }else{
             estado="Abierto";
@@ -310,7 +363,10 @@ public class NegocioServicioImpl implements NegocioServicio {
     }
 
     public String definirHoraCierre(Horario dia ){
-        String horaCierre= String.valueOf(dia.getHoraFin());
+        String horaCierre= "Cerrado";
+        if(!(dia==null)){
+            horaCierre= dia.getHoraFin().toString();
+        }
         return horaCierre;
     }
     public double calcularDistancia(Negocio n,double latitud,double longitud){
@@ -327,8 +383,12 @@ public class NegocioServicioImpl implements NegocioServicio {
     public Horario definirDia(Negocio n){
         LocalDate fechaActual = LocalDate.now();
         String dia= String.valueOf(fechaActual.getDayOfWeek());
-        Optional<Horario> horarioHoy= n.getHorarios().stream().filter(horario -> horario.getDia().equals(dia)).findFirst();
-        Horario hoy= horarioHoy.get();
-        return hoy;
+        Horario horarioHoy= null;
+        for(Horario h: n.getHorarios()){
+            if(h.getDia().equalsIgnoreCase(dia)){
+                horarioHoy=h;
+            }
+        }
+        return horarioHoy;
     }
 }

@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyecto.dto.usuariosdtos.ActualizarClienteDto;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.ItemUsuarioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.MostrarPerfilDTO;
+
 import co.edu.uniquindio.proyecto.model.Enum.EstadoRevision;
 import co.edu.uniquindio.proyecto.servicios.implementaciones.ModeradorServicioImpl;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ModeradorServicio;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/moderador")
 public class ModeradorControlador {
-    private final ModeradorServicioImpl moderadorServicio;
+    private final ModeradorServicio moderadorServicio;
 
     @PutMapping("/editar-password")
     public ResponseEntity<MensajeDTO<String>> cambiarPassword(@RequestBody CambiarPasswordModeradorDTO cambiarPasswordModeradorDTO)throws Exception{
@@ -30,28 +31,28 @@ public class ModeradorControlador {
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Moderador actualizado correctamente") );
     }
 
-    @PutMapping("/aceptar/Negocio")
+    @PutMapping("/aceptar-negocio")
     public ResponseEntity<MensajeDTO<String>> AceptarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.aceptarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio aceptado correctamente")
         );
     }
-    @PutMapping("/revisar/Negocio")
+    @PutMapping("/revisar-negocio")
     public ResponseEntity<MensajeDTO<String>> RevisarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.revisarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio revisado correctamente")
         );
     }
-    @PutMapping("/rechazar/Negocio")
+    @PutMapping("/rechazar-negocio")
     public ResponseEntity<MensajeDTO<String>> RechazarNegocio(@RequestBody RevisionesModeradorDTO revisionesModeradorDTO)throws
             Exception{
         moderadorServicio.rechazarNegocio(revisionesModeradorDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Negocio rechazado correctamente")
         );
     }
-    @PutMapping("/bloquear/{codigo}")
+    @PutMapping("/bloquear-usuario/{codigo}")
     public ResponseEntity<MensajeDTO<String>> BloquearUsuario(@PathVariable String codigo)throws
             Exception{
         moderadorServicio.bloquearUsuario(codigo);

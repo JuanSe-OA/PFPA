@@ -7,7 +7,6 @@ import co.edu.uniquindio.proyecto.dto.comentariodtos.ResponderComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.ItemUsuarioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.RegistroClienteDto;
-import co.edu.uniquindio.proyecto.servicios.implementaciones.ComentarioServicioImpl;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ComentarioServicio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/comentarios")
 public class ComentarioControlador {
-    private final ComentarioServicioImpl comentarioServicio;
+    private final ComentarioServicio  comentarioServicio;
     @PostMapping("/crear-comentario")
-    public ResponseEntity<MensajeDTO<String>> crearComentario(@Valid @RequestBody
-                                                                  CrearComentarioDTO crearComentarioDTO)throws Exception{
+    public ResponseEntity<MensajeDTO<String>> crearComentario(@Valid @RequestBody CrearComentarioDTO crearComentarioDTO)throws Exception{
         comentarioServicio.crearComentario(crearComentarioDTO);
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Comentario creado correctamente")
         );
@@ -32,10 +30,5 @@ public class ComentarioControlador {
     public ResponseEntity<MensajeDTO<String>> responderComentario(@RequestBody ResponderComentarioDTO responderComentarioDTO)throws Exception{
         comentarioServicio.responderComentario(responderComentarioDTO);
         return  ResponseEntity.ok().body(new MensajeDTO<>(false,"Respuesta publicada correctamente") );
-    }
-    @GetMapping("/listar-comentarios/{codigo}")
-    public ResponseEntity<MensajeDTO<List<ItemComentarioDTO>>> listarComentariosNegocio(@PathVariable @Valid String codigo) throws Exception {
-        return ResponseEntity.ok().body( new MensajeDTO<>(false, comentarioServicio.listarComentariosNegocio(codigo) )
-        );
     }
 }

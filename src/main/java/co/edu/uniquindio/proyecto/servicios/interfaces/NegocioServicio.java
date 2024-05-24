@@ -23,9 +23,10 @@ public interface NegocioServicio {
 
     ItemNegocioInfoDTO obtenerInformacionNegocio(String codigoNegocio) throws Exception;
 
-    List<ItemListarNegociosDTO> listarNegociosPropietario(String codigoUsuario);
+    List<ItemListarNegociosDTO> listarNegociosPropietario(String codigoUsuario)throws Exception;
 
     List<ItemListarNegociosDTO> listarNegociosFavoritos(String codigoUsuario)throws Exception;
 
-    void cambiarEstado(String codigoNegocio, EstadoRegistro estadoRegistro)throws Exception;
+    void cambiarEstado(CambiarEstadoNegocioDTO cambiarEstadoNegocioDTO)throws Exception;
+    ObtenerNegocioDTO obtenerNegocio(String codigoNegocio) throws  Exception;
 }

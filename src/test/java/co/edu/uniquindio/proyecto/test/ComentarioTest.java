@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.test;
 
 import co.edu.uniquindio.proyecto.dto.comentariodtos.CrearComentarioDTO;
+import co.edu.uniquindio.proyecto.dto.comentariodtos.ItemComentarioDTO;
 import co.edu.uniquindio.proyecto.dto.comentariodtos.ResponderComentarioDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.repositorios.ComentariosRepo;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -33,9 +35,9 @@ public class ComentarioTest {
     @Test
     public void responderComentario_Test() throws Exception {
         // Código de comentario existente en la base de datos
-        String codigoComentario = "661f59fd0cf374196659ca70";
+        String codigoComentario = "661f34e579bc8e47517b0fb4";
         // Mensaje de respuesta
-        String mensajeRespuesta = "Gracias por preferirnos";
+        String mensajeRespuesta = "Gracias por visitarnos";
 
         // Llamada al método a probar
         comentarioServicioImpl.responderComentario(new ResponderComentarioDTO(codigoComentario,mensajeRespuesta));
@@ -46,6 +48,23 @@ public class ComentarioTest {
 
         // Verificar que la respuesta no sea nula
         Assertions.assertNotNull(comentarioGuardado.get().getRespuesta(), "La respuesta del comentario es nula");
+    }
 
+    @Test
+    public void listarComentariosNegocioTest()throws Exception{
+        List<ItemComentarioDTO> itemsComentariosNegocio= comentarioServicioImpl.listarComentariosNegocio("Negocio4");
+        Assertions.assertFalse(itemsComentariosNegocio.isEmpty());
+    }
+
+    @Test
+    public void calcularPromedioCalificacionesTest(){
+        double promedio = comentarioServicioImpl.calcularPromedioCalificaciones("Negocio9");
+        Assertions.assertEquals(promedio,0);
+    }
+
+    @Test
+    public void calcularPromedioCalificacionesOkTest(){
+        double promedio = comentarioServicioImpl.calcularPromedioCalificaciones("Negocio4");
+        Assertions.assertEquals(promedio,4);
     }
 }
