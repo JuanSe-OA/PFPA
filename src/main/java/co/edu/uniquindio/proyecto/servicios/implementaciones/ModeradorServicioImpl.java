@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.servicios.implementaciones;
 import co.edu.uniquindio.proyecto.dto.EmailDTO;
 import co.edu.uniquindio.proyecto.dto.moderadordtos.*;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
+import co.edu.uniquindio.proyecto.dto.usuariosdtos.MostrarPerfilDTO;
 import co.edu.uniquindio.proyecto.model.Documents.Comentario;
 import co.edu.uniquindio.proyecto.model.Documents.Moderador;
 import co.edu.uniquindio.proyecto.model.Documents.Negocio;
@@ -72,6 +73,15 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         LocalDateTime fecha= LocalDateTime.now();
         revision.setFecha(fecha);
         negocio.getHistorialRevisiones().add(revision);
+        Optional<Usuario> optionalUsuario = usuariosRepo.findById(negocio.getCodigoUsuario());
+        if (optionalUsuario.isEmpty()) {
+            throw new Exception("El usuario no se ecnuentra registrado");
+        }
+        Usuario usuario = optionalUsuario.get();
+        String asunto = "Regsitro aprobado";
+        String cuerpo = "Bienvenido, su negocio ya se encuentra registrado correctamente <3";
+        String correo = usuario.getEmail();
+        emailServicio.enviarCorreo(new EmailDTO(asunto,cuerpo,correo));
         negociosRepo.save(negocio);
     }
 
@@ -92,6 +102,15 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setEstado(EstadoRevision.PENDIENTE);
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         negocio.getHistorialRevisiones().add(revision);
+        Optional<Usuario> optionalUsuario = usuariosRepo.findById(negocio.getCodigoUsuario());
+        if (optionalUsuario.isEmpty()) {
+            throw new Exception("El usuario no se ecnuentra registrado");
+        }
+        Usuario usuario = optionalUsuario.get();
+        String asunto = "Regsitro pendiente";
+        String cuerpo = "Revisión, su negocio se encuentra en revisión, por favor revise lo siguiente: " +revision.getDescripcion();
+        String correo = usuario.getEmail();
+        emailServicio.enviarCorreo(new EmailDTO(asunto,cuerpo,correo));
         negociosRepo.save(negocio);
 
     }
@@ -100,7 +119,7 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     public void rechazarNegocio(RevisionesModeradorDTO revisionesModeradorDTO) throws Exception {
         Optional<Negocio> optionalNegocio = negociosRepo.findById(revisionesModeradorDTO.codigoNegocio());
         if (optionalNegocio.isEmpty()) {
-            throw new Exception("El negocio no se ecnuentra registrado");
+            throw new Exception("El negocio no se enuentra registrado");
         }
         Negocio negocio = optionalNegocio.get();
         Revision revision = new Revision();
@@ -112,6 +131,15 @@ public class ModeradorServicioImpl implements ModeradorServicio {
         revision.setFecha(fecha);
         negocio.setEstadoRegistro(EstadoRegistro.INACTIVO);
         negocio.getHistorialRevisiones().add(revision);
+        Optional<Usuario> optionalUsuario = usuariosRepo.findById(negocio.getCodigoUsuario());
+        if (optionalUsuario.isEmpty()) {
+            throw new Exception("El usuario no se ecnuentra registrado");
+        }
+        Usuario usuario = optionalUsuario.get();
+        String asunto = "Regsitro rechazada";
+        String cuerpo = "Rechazo, su negocio ha sido rechazado, crear un nuevo negocio. Su negocio ha sido rechazado por lo siguiente: " +revision.getDescripcion();
+        String correo = usuario.getEmail();
+        emailServicio.enviarCorreo(new EmailDTO(asunto,cuerpo,correo));
         negociosRepo.save(negocio);
     }
 
@@ -152,8 +180,8 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     }
 
     @Override
-    public List<ItemNegociosRevisionDTO> listarRevisiones(EstadoRegistro estadoRegistro) throws Exception {
-        List<Negocio>negocios = negociosRepo.findByEstadoRegistro(estadoRegistro);
+    public List<ItemNegociosRevisionDTO> listarRevisiones(EstadoRevision estadoRevision) throws Exception {
+        List<Negocio>negocios = negociosRepo.findByEstadoRevision(estadoRevision);
         List<ItemNegociosRevisionDTO> itemNegociosRevisionDTOSList = new ArrayList<>();
         for (Negocio negocio : negocios) {
             itemNegociosRevisionDTOSList.add(new ItemNegociosRevisionDTO(negocio.getNombre(), negocio.getDescripcion(),
@@ -164,18 +192,18 @@ public class ModeradorServicioImpl implements ModeradorServicio {
     }
 
     @Override
-    public ItemNegociosRevisionDTO revisarNegocio(String codigo) throws Exception {
-        Optional<Negocio> optionalNegocio = negociosRepo.findById(codigo);
-        if (optionalNegocio.isPresent()) {
-            Negocio negocio = optionalNegocio.get();
-            ItemNegociosRevisionDTO itemNegociosRevisionDTO = new ItemNegociosRevisionDTO(
-                    negocio.getNombre(),
-                    negocio.getDescripcion(), negocio.getTelefonos(),
-                    negocio.getDireccion(), negocio.getHorarios(),
-                    negocio.getTipoNegocio(), negocio.getImagenes());
-            return itemNegociosRevisionDTO;
-        } else {
-            throw new Exception("El negocio no existe");
+    public ObtenerModeradorDTO obtenerModerador(String codigo) throws Exception {
+        Optional<Moderador>moderadorOptional = moderadorRepo.findById(codigo);
+        if(moderadorOptional.isEmpty()){
+            throw new Exception("El usuario no se encuentra registrado");
         }
+        Moderador moderador = moderadorOptional.get();
+        if(!moderador.getEmail().isEmpty()){
+            return new ObtenerModeradorDTO(codigo,moderador.getEmail(),moderador.getPassword());
+        }
+        else {
+            throw new Exception("El usuario no tiene un email asociado");
+        }
+
     }
 }

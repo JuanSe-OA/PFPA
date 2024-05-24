@@ -34,12 +34,18 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public String crearNegocio(CrearNegocioDTO crearNegocioDTO) throws Exception {
-        Optional<Usuario> optionalUsuario = usuariosRepo.findById(crearNegocioDTO.codigoUsuario());
-        if(optionalUsuario.isEmpty()){
-            throw new Exception("No se ha encontrado al usuario");
+
+        Optional<Negocio> negocioExistente = negocioRepo.findByNombre(crearNegocioDTO.nombre());
+        if (negocioExistente.isPresent()) {
+            throw new IllegalArgumentException("Ya existe un negocio con ese nombre");
+        }
+        if(crearNegocioDTO.nombre().isEmpty()||crearNegocioDTO.nombre().isEmpty()||crearNegocioDTO.descripcion().isEmpty()||
+        crearNegocioDTO.direccion().isEmpty()||crearNegocioDTO.telefonos().isEmpty()||crearNegocioDTO.horarios().isEmpty()||
+        crearNegocioDTO.horarios().isEmpty()||crearNegocioDTO.imagenes().isEmpty()||crearNegocioDTO.tipoNegocio()==null||crearNegocioDTO.ubicacion()==null
+        ){
+            throw new Exception("No fue posible crear el negocio, debes llenar todos los campos");
         }
         Negocio negocio = new Negocio();
-
         negocio.setNombre(crearNegocioDTO.nombre());
         negocio.setDescripcion(crearNegocioDTO.descripcion());
         negocio.setCodigoUsuario(crearNegocioDTO.codigoUsuario());
@@ -52,6 +58,7 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocio.setEstadoRegistro(EstadoRegistro.ACTIVO);
         List<Revision> historialRevisiones = new ArrayList<>();
         negocio.setHistorialRevisiones(historialRevisiones);
+
         Negocio negocioGuardado=negocioRepo.save(negocio);
 
         return negocioGuardado.getCodigo();
@@ -64,6 +71,14 @@ public class NegocioServicioImpl implements NegocioServicio {
         if(optionalNegocio.isEmpty()){
             throw new Exception("El negocio a modificar no ha sido encontrado");
         }
+
+        if(actualizarNegocioDTO.nombre().isEmpty()||actualizarNegocioDTO.nombre().isEmpty()||actualizarNegocioDTO.descripcion().isEmpty()||
+                actualizarNegocioDTO.direccion().isEmpty()||actualizarNegocioDTO.telefonos().isEmpty()||actualizarNegocioDTO.horarios().isEmpty()||
+                actualizarNegocioDTO.horarios().isEmpty()||actualizarNegocioDTO.imagenes().isEmpty()||actualizarNegocioDTO.ubicacion()==null
+        ){
+            throw new Exception("No fue posible actualizar el negocio, debes llenar todos los campos");
+        }
+
         Negocio negocio = optionalNegocio.get();
         negocio.setNombre(actualizarNegocioDTO.nombre());
         negocio.setDescripcion(actualizarNegocioDTO.descripcion());
@@ -72,6 +87,11 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocio.setImagenes(actualizarNegocioDTO.imagenes());
         negocio.setHorarios(actualizarNegocioDTO.horarios());
         negocio.setUbicacion(actualizarNegocioDTO.ubicacion());
+
+        Optional<Negocio> negocioExistente = negocioRepo.findByNombre(actualizarNegocioDTO.nombre());
+        if (negocioExistente.isPresent()) {
+            throw new IllegalArgumentException("Ya existe un negocio con ese nombre");
+        }
 
         negocioRepo.save(negocio);
     }
@@ -146,6 +166,9 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public DetalleNegocioPropioDTO obtenerDetalleNegocioPropio(String codigoNegocio) throws Exception {
+        if(codigoNegocio.isEmpty()){
+            throw new Exception("El codigo del negocio es null");
+        }
         Optional<Negocio> optionalNegocio=negocioRepo.findById(codigoNegocio);
         if(optionalNegocio.isEmpty()){
             throw new Exception("No se ha podido encontrar el negocio");
