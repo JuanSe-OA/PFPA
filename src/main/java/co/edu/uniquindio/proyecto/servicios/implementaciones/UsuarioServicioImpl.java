@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyecto.model.Enum.EstadoRegistro;
 import co.edu.uniquindio.proyecto.repositorios.UsuariosRepo;
 import co.edu.uniquindio.proyecto.servicios.interfaces.EmailServicio;
 import co.edu.uniquindio.proyecto.servicios.interfaces.UsuarioServicio;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +23,14 @@ import java.util.Optional;
 public class UsuarioServicioImpl implements UsuarioServicio {
     private final UsuariosRepo usuariosRepo;
     private final EmailServicio emailServicio;
+    private final ConcurrentMapCacheManager cacheManager;
     LocalTime hora = LocalTime.now();
 
 
-    public UsuarioServicioImpl(UsuariosRepo usuariosRepo, EmailServicio emailServicio){
+    public UsuarioServicioImpl(UsuariosRepo usuariosRepo, EmailServicio emailServicio, ConcurrentMapCacheManager cacheManager){
         this.usuariosRepo= usuariosRepo;
         this.emailServicio = emailServicio;
+        this.cacheManager = cacheManager;
     }
     @Override
     public String registrarse(RegistroClienteDto registroClienteDTO) throws Exception {
@@ -83,6 +86,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new Exception("Usted no se encuentra registrado");
         }
         Usuario usuario = usuarioOptional.get();
+        if(cambioPasswordDto.passwordNueva().length()<8){
+            throw new Exception("El tamaño de la contraseña no cumple con los requeremientos");
+        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         usuario.setPassword(passwordEncoder.encode(cambioPasswordDto.passwordNueva()));
         usuariosRepo.save(usuario);
@@ -91,6 +97,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Override
     public MostrarPerfilDTO mostrarPerfil(String codigo) throws Exception {
+        if(codigo.isEmpty()){
+            throw new Exception("El codigo del usuario no puede ser vacio");
+        }
         Optional<Usuario>usuarioOptional = usuariosRepo.findById(codigo);
         if(usuarioOptional.isEmpty()){
             throw new Exception("El usuario no se encuentra registrado");
