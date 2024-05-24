@@ -2,11 +2,13 @@ package co.edu.uniquindio.proyecto.controladores;
 
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.dto.moderadordtos.CambiarPasswordModeradorDTO;
+import co.edu.uniquindio.proyecto.dto.moderadordtos.ItemNegociosRevisionDTO;
 import co.edu.uniquindio.proyecto.dto.moderadordtos.RevisionesModeradorDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.ActualizarClienteDto;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.CambioPasswordDto;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.ItemUsuarioDTO;
 import co.edu.uniquindio.proyecto.dto.usuariosdtos.MostrarPerfilDTO;
+import co.edu.uniquindio.proyecto.model.Enum.EstadoRevision;
 import co.edu.uniquindio.proyecto.servicios.implementaciones.ModeradorServicioImpl;
 import co.edu.uniquindio.proyecto.servicios.interfaces.ModeradorServicio;
 import jakarta.validation.Valid;
@@ -56,6 +58,15 @@ public class ModeradorControlador {
         return ResponseEntity.ok().body( new MensajeDTO<>(false, "Cliente bloqueado correctamente")
         );
     }
+    @GetMapping("/filtro/{estadoRevision}")
+    public ResponseEntity<MensajeDTO<List<ItemNegociosRevisionDTO>>> listarRevisiones(@PathVariable EstadoRevision estadoRevision)throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, moderadorServicio.listarRevisiones(estadoRevision)));
+    }
+    @GetMapping("/obtener/{id}")
+    public ResponseEntity<MensajeDTO<String>> obtenerModerador(@PathVariable String id) throws Exception {
+        moderadorServicio.obtenerModerador(id);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Moderador obtenido correctamente")
+        );
 
-
+    }
 }
