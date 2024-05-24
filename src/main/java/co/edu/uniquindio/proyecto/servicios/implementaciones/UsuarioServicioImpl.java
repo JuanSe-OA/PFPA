@@ -132,7 +132,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public void agregarNegocioFavoritos(AgregarNegocioFavoritoDTO agregarNegocioFavoritoDTO) throws Exception {
+    public String agregarNegocioFavoritos(AgregarNegocioFavoritoDTO agregarNegocioFavoritoDTO) throws Exception {
         Optional<Negocio> optionalNegocio = negociosRepo.findById(agregarNegocioFavoritoDTO.codigoNegocio());
         if(optionalNegocio.isEmpty()){
             throw new Exception("El negocio no ha sido encontrado");
@@ -142,8 +142,21 @@ public class UsuarioServicioImpl implements UsuarioServicio {
             throw new Exception("El usuario no ha sido encontrado");
         }
         Usuario usuario = optionalUsuario.get();
+        Negocio negocio =  optionalNegocio.get();
+
+        if(negocio.getCodigoUsuario().equals(usuario.getCodigo())){
+            throw new Exception("No puede añadir su propio negocio a sus favoritos");
+        }
+        for(String n: usuario.getFavoritos()){
+            if(n.equalsIgnoreCase(agregarNegocioFavoritoDTO.codigoNegocio())){
+                usuario.getFavoritos().remove(negocio);
+                usuariosRepo.save(usuario);
+                return "Negocio eliminado de favoritos correctamente";
+            }
+        }
         usuario.getFavoritos().add(agregarNegocioFavoritoDTO.codigoNegocio());
         usuariosRepo.save(usuario);
+        return "Negocio agregado a favoritos correctamente";
     }
 
     private boolean existeEmail(String email) {

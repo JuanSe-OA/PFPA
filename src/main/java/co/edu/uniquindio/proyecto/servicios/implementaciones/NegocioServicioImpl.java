@@ -140,7 +140,8 @@ public class NegocioServicioImpl implements NegocioServicio {
                 negocio.getTipoNegocio(),
                 horaCierre,
                 estadoActual,
-                negocio.getImagenes());
+                negocio.getImagenes(),
+                negocio.getUbicacion());
         return detalleNegocioDTO;
     }
 
@@ -219,7 +220,9 @@ public class NegocioServicioImpl implements NegocioServicio {
             throw new Exception("No se ha encontrado al usuario");
         }
         List<ItemListarNegociosDTO> negociosFavoritosDTOs= new ArrayList<>();
-        List<String> favoritos= usuariosRepo.findFavoritosByCodigoUsuario(codigoUsuario);
+        Usuario u= optionalUsuario.get();
+        List<String> favoritos= u.getFavoritos();
+        System.out.println(favoritos.size());
         for(String codigo: favoritos){
             Optional<Negocio> optionalNegocio = negocioRepo.findById(codigo);
             if(optionalNegocio.isEmpty()){

@@ -18,6 +18,6 @@ public interface UsuarioServicio extends CuentaServicio {
 
     List<ItemUsuarioDTO> listarClientes() throws Exception;
 
-    void agregarNegocioFavoritos(AgregarNegocioFavoritoDTO agregarNegocioFavoritoDTO)throws Exception;
+    String agregarNegocioFavoritos(AgregarNegocioFavoritoDTO agregarNegocioFavoritoDTO)throws Exception;
 }
 
