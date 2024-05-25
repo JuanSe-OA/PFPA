@@ -13,4 +13,4 @@ FROM openjdk:17
 ARG JAR_FILE=build/libs/*.jar
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 EXPOSE ${PORT}
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/PFPA-1.0-SNAPSHOT.jar"]
