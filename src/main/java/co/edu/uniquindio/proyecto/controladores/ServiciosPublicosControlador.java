@@ -43,8 +43,8 @@ public class ServiciosPublicosControlador {
         return  ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.obtenerInformacionNegocio(codigoNegocio)));
     }
 
-    @GetMapping("/buscar-negocios-por-distancia")
-    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> buscarNegociosDistancia(@RequestBody ObtenerDistanciaDTO obtenerDistanciaDTO){
+    @GetMapping("/buscar-negocios-por-distancia/{obtenerDistanciaDTO}")
+    public ResponseEntity<MensajeDTO<List<ItemListarNegociosDTO>>> buscarNegociosDistancia(@PathVariable ObtenerDistanciaDTO obtenerDistanciaDTO){
         return ResponseEntity.ok().body(new MensajeDTO<>(false, negocioServicio.buscarNegociosDistancia(obtenerDistanciaDTO)));
     }
 }
