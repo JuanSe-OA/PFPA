@@ -34,11 +34,6 @@ public class NegocioServicioImpl implements NegocioServicio {
 
     @Override
     public String crearNegocio(CrearNegocioDTO crearNegocioDTO) throws Exception {
-
-        Optional<Negocio> negocioExistente = negocioRepo.findByNombre(crearNegocioDTO.nombre());
-        if (negocioExistente.isPresent()) {
-            throw new IllegalArgumentException("Ya existe un negocio con ese nombre");
-        }
         if(crearNegocioDTO.nombre().isEmpty()||crearNegocioDTO.nombre().isEmpty()||crearNegocioDTO.descripcion().isEmpty()||
         crearNegocioDTO.direccion().isEmpty()||crearNegocioDTO.telefonos().isEmpty()||crearNegocioDTO.horarios().isEmpty()||
         crearNegocioDTO.horarios().isEmpty()||crearNegocioDTO.imagenes().isEmpty()||crearNegocioDTO.tipoNegocio()==null||crearNegocioDTO.ubicacion()==null
@@ -87,11 +82,6 @@ public class NegocioServicioImpl implements NegocioServicio {
         negocio.setImagenes(actualizarNegocioDTO.imagenes());
         negocio.setHorarios(actualizarNegocioDTO.horarios());
         negocio.setUbicacion(actualizarNegocioDTO.ubicacion());
-
-        Optional<Negocio> negocioExistente = negocioRepo.findByNombre(actualizarNegocioDTO.nombre());
-        if (negocioExistente.isPresent()) {
-            throw new IllegalArgumentException("Ya existe un negocio con ese nombre");
-        }
 
         negocioRepo.save(negocio);
     }
@@ -160,7 +150,8 @@ public class NegocioServicioImpl implements NegocioServicio {
                 negocio.getTipoNegocio(),
                 horaCierre,
                 estadoActual,
-                negocio.getImagenes());
+                negocio.getImagenes(),
+                negocio.getUbicacion());
         return detalleNegocioDTO;
     }
 
@@ -242,7 +233,9 @@ public class NegocioServicioImpl implements NegocioServicio {
             throw new Exception("No se ha encontrado al usuario");
         }
         List<ItemListarNegociosDTO> negociosFavoritosDTOs= new ArrayList<>();
-        List<String> favoritos= usuariosRepo.findFavoritosByCodigoUsuario(codigoUsuario);
+        Usuario u= optionalUsuario.get();
+        List<String> favoritos= u.getFavoritos();
+        System.out.println(favoritos.size());
         for(String codigo: favoritos){
             Optional<Negocio> optionalNegocio = negocioRepo.findById(codigo);
             if(optionalNegocio.isEmpty()){
